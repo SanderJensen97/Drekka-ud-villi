@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hjul – Drekka ud Villi</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .wheel-layout {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2rem;
+      align-items: flex-start;
+      justify-content: center;
+    }
+
+    /* ---- Canvas + pointer ---- */
+    .wheel-wrap {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      flex-shrink: 0;
+    }
+
+    .wheel-pointer {
+      width: 0;
+      height: 0;
+      border-left: 14px solid transparent;
+      border-right: 14px solid transparent;
+      border-top: 32px solid var(--gold);
+      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.6));
+      margin-bottom: -6px;
+      z-index: 2;
+    }
+
+    #wheelCanvas {
+      border-radius: 50%;
+      border: 4px solid var(--gold);
+      box-shadow: 0 0 30px rgba(201,168,76,0.25);
+      display: block;
+    }
+
+    .spin-btn {
+      margin-top: 1.2rem;
+      padding: 0.75rem 2.5rem;
+      background: var(--gold);
+      color: #000;
+      border: none;
+      border-radius: 5px;
+      font-family: 'Oswald', sans-serif;
+      font-size: 1.2rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.1s;
+    }
+
+    .spin-btn:hover { background: var(--accent); }
+    .spin-btn:active { transform: scale(0.97); }
+    .spin-btn:disabled { background: #444; color: #888; cursor: not-allowed; }
+
+    /* ---- Result banner ---- */
+    #resultBanner {
+      display: none;
+      margin-top: 1rem;
+      padding: 0.75rem 1.5rem;
+      background: rgba(139,0,0,0.35);
+      border: 2px solid var(--deep-red);
+      border-radius: 6px;
+      font-family: 'Oswald', sans-serif;
+      font-size: 1.4rem;
+      letter-spacing: 0.15em;
+      color: #ff8888;
+      text-align: center;
+      animation: pulse 1s infinite alternate;
+    }
+
+    /* ---- Sidebar: name list ---- */
+    .name-panel {
+      flex: 1;
+      min-width: 200px;
+      max-width: 280px;
+    }
+
+    .name-panel h3 {
+      font-family: 'Oswald', sans-serif;
+      color: var(--gold);
+      font-size: 1rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      margin-bottom: 0.75rem;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 0.4rem;
+    }
+
+    .name-list {
+      list-style: none;
+      margin: 0 0 1rem 0;
+      padding: 0;
+      max-height: 420px;
+      overflow-y: auto;
+    }
+
+    .name-list li {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.35rem 0.5rem;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.95rem;
+      color: var(--text-light);
+    }
+
+    .name-list li.removed {
+      color: #444;
+      text-decoration: line-through;
+    }
+
+    .remove-btn {
+      background: none;
+      border: none;
+      color: #555;
+      cursor: pointer;
+      font-size: 1rem;
+      padding: 0 0.2rem;
+      line-height: 1;
+      transition: color 0.15s;
+    }
+
+    .remove-btn:hover { color: var(--deep-red); }
+
+    .reset-wheel-btn {
+      width: 100%;
+      padding: 0.5rem;
+      background: transparent;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      color: #777;
+      font-family: 'Oswald', sans-serif;
+      font-size: 0.85rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .reset-wheel-btn:hover {
+      border-color: var(--gold);
+      color: var(--gold);
+    }
+
+    .count-label {
+      font-size: 0.8rem;
+      color: #666;
+      margin-bottom: 0.5rem;
+    }
+
+    /* ---- Add-name row ---- */
+    .add-name-row {
+      display: flex;
+      gap: 0.4rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .add-name-row input {
+      flex: 1;
+      min-width: 0;
+      padding: 0.4rem 0.6rem;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      color: var(--text-light);
+      font-size: 0.9rem;
+      font-family: 'Roboto', sans-serif;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .add-name-row input:focus { border-color: var(--gold); }
+
+    .add-name-row button {
+      padding: 0.4rem 0.7rem;
+      background: var(--gold);
+      color: #000;
+      border: none;
+      border-radius: 4px;
+      font-family: 'Oswald', sans-serif;
+      font-size: 0.85rem;
+      letter-spacing: 0.05em;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: background 0.2s;
+    }
+
+    .add-name-row button:hover { background: var(--accent); }
+  </style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="logo-title">Drekka ud Villi</div>
+  <div class="logo-subtitle">Amsterdam &nbsp;·&nbsp; April 2026</div>
+</header>
+
+<nav>
+  <a href="index.html">Hjem</a>
+  <a href="info.html">Info</a>
+  <a href="timeline.html">Program</a>
+  <a href="bingo.html">Bingo</a>
+  <a href="wheel.html" class="active">Hjul</a>
+  <a href="pakkeliste.html">Pakkeliste</a>
+  <a href="faq.html">FAQ</a>
+</nav>
+
+<main>
+  <div class="card" style="margin-bottom:1.5rem;">
+    <h2>🎡 Lykkehjulet</h2>
+  </div>
+
+  <div class="wheel-layout">
+
+    <!-- Wheel -->
+    <div class="wheel-wrap">
+      <div class="wheel-pointer"></div>
+      <canvas id="wheelCanvas" width="420" height="420"></canvas>
+      <button class="spin-btn" id="spinBtn" onclick="spin()">SPIN!</button>
+      <div id="resultBanner"></div>
+    </div>
+
+    <!-- Name sidebar -->
+    <div class="name-panel card">
+      <h3>Deltakere</h3>
+      <div class="count-label" id="countLabel"></div>
+      <div class="add-name-row">
+        <input type="text" id="addNameInput" placeholder="Legg til navn..." autocomplete="off" />
+        <button onclick="addName()">+ Legg til</button>
+      </div>
+      <ul class="name-list" id="nameList"></ul>
+      <button class="reset-wheel-btn" onclick="resetWheel()">↺ Nullstill hjulet</button>
+    </div>
+
+  </div>
+</main>
+
+<footer>Drekka ud Villi · Amsterdam 2026</footer>
+
+<script>
+// ============================================================
+//  WHEEL OF FORTUNE
+// ============================================================
+
+const ALL_NAMES = [
+  "Etti","Villi","Mikael","Ole","Tommy","Are","Jone",
+  "Bjelli","Kessa","Sylli","Heike","Mj","Håvi","Olav",
+  "Matti","Iden","Sweed","Ekka"
+];
+
+// Display label — Villi gets a crown
+function displayName(name) {
+  return name === 'Villi' ? '👑 ' + name : name;
+}
+
+// Distinct segment colours
+const PALETTE = [
+  "#8b1a1a","#c9a84c","#1a3a6b","#2d6b2d","#6b1a6b",
+  "#6b4a1a","#1a5a5a","#8b4513","#4a6b1a","#5a1a4a",
+  "#1a4a2a","#6b6b1a","#1a1a6b","#6b2a1a","#2a5a2a",
+  "#8b6914","#1a5a3a","#5a3a6b"
+];
+
+// Master list (ALL_NAMES + any extras added at runtime)
+let masterList  = [...ALL_NAMES];
+let extraNames  = [];            // names added by user
+let active      = [...ALL_NAMES];
+let spinning    = false;
+let angle       = 0;
+
+const canvas  = document.getElementById('wheelCanvas');
+const ctx     = canvas.getContext('2d');
+const spinBtn = document.getElementById('spinBtn');
+
+// ---- Colour lookup — stable for original names, wraps for extras ----
+function colourFor(name) {
+  const idx = masterList.indexOf(name);
+  return PALETTE[((idx >= 0 ? idx : 0)) % PALETTE.length];
+}
+
+// ---- Responsive canvas size ----
+function resizeCanvas() {
+  const size = Math.min(420, window.innerWidth - 48);
+  canvas.width  = size;
+  canvas.height = size;
+  drawWheel(angle);
+}
+
+// ---- Draw ----
+function drawWheel(rot) {
+  const cx = canvas.width  / 2;
+  const cy = canvas.height / 2;
+  const r  = cx - 4;
+
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  if (active.length === 0) {
+    ctx.fillStyle = '#333';
+    ctx.beginPath();
+    ctx.arc(cx, cy, r, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.fillStyle = '#888';
+    ctx.font = 'bold 1rem Oswald, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText('Ingen igjen!', cx, cy);
+    return;
+  }
+
+  const n     = active.length;
+  const slice = (Math.PI * 2) / n;
+
+  active.forEach((name, i) => {
+    const start = rot + i * slice;
+    const end   = start + slice;
+    const color = colourFor(name);
+
+    // Segment
+    ctx.beginPath();
+    ctx.moveTo(cx, cy);
+    ctx.arc(cx, cy, r, start, end);
+    ctx.closePath();
+    ctx.fillStyle = color;
+    ctx.fill();
+    ctx.strokeStyle = '#0d0d0d';
+    ctx.lineWidth = 2;
+    ctx.stroke();
+
+    // Label
+    const mid    = start + slice / 2;
+    const labelR = r * 0.65;
+    const lx     = cx + Math.cos(mid) * labelR;
+    const ly     = cy + Math.sin(mid) * labelR;
+    const fs     = Math.max(10, Math.min(15, Math.floor(r * 0.1)));
+
+    ctx.save();
+    ctx.translate(lx, ly);
+    ctx.rotate(mid + Math.PI / 2);
+    ctx.fillStyle = '#fff';
+    ctx.font = `bold ${fs}px Oswald, sans-serif`;
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.shadowColor = 'rgba(0,0,0,0.7)';
+    ctx.shadowBlur  = 3;
+    ctx.fillText(displayName(name), 0, 0);
+    ctx.restore();
+  });
+
+  // Centre cap
+  ctx.beginPath();
+  ctx.arc(cx, cy, r * 0.08, 0, Math.PI * 2);
+  ctx.fillStyle = '#0d0d0d';
+  ctx.fill();
+  ctx.strokeStyle = var_gold();
+  ctx.lineWidth = 2;
+  ctx.stroke();
+}
+
+function var_gold() { return '#c9a84c'; }
+
+// ---- Spin ----
+function spin() {
+  if (spinning || active.length === 0) return;
+  spinning = true;
+  spinBtn.disabled = true;
+  document.getElementById('resultBanner').style.display = 'none';
+
+  // Random total rotation: 5–10 full turns + random offset
+  const extra   = Math.random() * Math.PI * 2;
+  const total   = (Math.PI * 2) * (5 + Math.random() * 5) + extra;
+  const duration = 4000 + Math.random() * 1500; // ms
+  const start   = performance.now();
+  const startAngle = angle;
+
+  function easeOut(t) {
+    return 1 - Math.pow(1 - t, 4);
+  }
+
+  function frame(now) {
+    const elapsed = now - start;
+    const t = Math.min(elapsed / duration, 1);
+    angle = startAngle + total * easeOut(t);
+    drawWheel(angle);
+
+    if (t < 1) {
+      requestAnimationFrame(frame);
+    } else {
+      angle = angle % (Math.PI * 2);
+      spinning = false;
+      spinBtn.disabled = false;
+      announceWinner();
+    }
+  }
+
+  requestAnimationFrame(frame);
+}
+
+// ---- Determine winner ----
+// Pointer is at top (270° = -π/2). We need which segment is under it.
+function announceWinner() {
+  if (active.length === 0) return;
+
+  const n     = active.length;
+  const slice = (Math.PI * 2) / n;
+
+  // Normalise pointer direction to wheel's coordinate frame
+  const pointer = (- Math.PI / 2 - angle + Math.PI * 2 * 100) % (Math.PI * 2);
+  const idx     = Math.floor(pointer / slice) % n;
+  const winner  = active[idx];
+
+  const banner = document.getElementById('resultBanner');
+  banner.textContent = `🎉 ${winner}! 🎉`;
+  banner.style.display = 'block';
+
+  removeName(winner);
+}
+
+// ---- Remove name ----
+function removeName(name) {
+  active = active.filter(n => n !== name);
+  drawWheel(angle);
+  renderList();
+}
+
+// ---- Render sidebar list ----
+function renderList() {
+  const ul = document.getElementById('nameList');
+  ul.innerHTML = '';
+
+  masterList.forEach(name => {
+    const li   = document.createElement('li');
+    const isOn = active.includes(name);
+    if (!isOn) li.classList.add('removed');
+
+    const span = document.createElement('span');
+    span.textContent = displayName(name);
+    li.appendChild(span);
+
+    if (isOn) {
+      const btn = document.createElement('button');
+      btn.className   = 'remove-btn';
+      btn.title       = 'Fjern frå hjulet';
+      btn.textContent = '✕';
+      btn.onclick     = () => {
+        removeName(name);
+        document.getElementById('resultBanner').style.display = 'none';
+      };
+      li.appendChild(btn);
+    }
+
+    ul.appendChild(li);
+  });
+
+  document.getElementById('countLabel').textContent =
+    `${active.length} av ${masterList.length} på hjulet`;
+
+  spinBtn.disabled = (active.length === 0 || spinning);
+}
+
+// ---- Add name ----
+function addName() {
+  const input = document.getElementById('addNameInput');
+  const name  = input.value.trim();
+  if (!name) return;
+  if (masterList.map(n => n.toLowerCase()).includes(name.toLowerCase())) {
+    input.value = '';
+    return; // already exists
+  }
+  masterList.push(name);
+  extraNames.push(name);
+  active.push(name);
+  input.value = '';
+  drawWheel(angle);
+  renderList();
+}
+
+document.getElementById('addNameInput').addEventListener('keydown', e => {
+  if (e.key === 'Enter') addName();
+});
+
+// ---- Reset ----
+function resetWheel() {
+  if (spinning) return;
+  masterList  = [...ALL_NAMES, ...extraNames];
+  active      = [...masterList];
+  angle       = 0;
+  document.getElementById('resultBanner').style.display = 'none';
+  drawWheel(angle);
+  renderList();
+}
+
+// ---- Init ----
+resizeCanvas();
+renderList();
+window.addEventListener('resize', resizeCanvas);
+</script>
+
+<script src="auth.js"></script>
+<script>requireGlobalAuth();</script>
+
+</body>
+</html>

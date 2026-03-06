@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Drekka ud Villi – Amsterdam 2026</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<header class="site-header">
+  <div class="logo-title">Drekka ud Villi</div>
+  <div class="logo-subtitle">Amsterdam &nbsp;·&nbsp; April 2026</div>
+</header>
+
+<nav>
+  <a href="index.html" class="active">Hjem</a>
+  <a href="info.html">Info</a>
+  <a href="timeline.html">Program</a>
+  <a href="bingo.html">Bingo</a>
+  <a href="wheel.html">Hjul</a>
+  <a href="pakkeliste.html">Pakkeliste</a>
+  <a href="faq.html">FAQ</a>
+</nav>
+
+<!-- Countdown pinned just below nav, outside main padding -->
+<div class="countdown-wrap" id="countdownWrap" style="padding:0.8rem 1rem 0;">
+  <div class="countdown-label">Avgang om</div>
+  <div class="countdown-blocks">
+    <div class="cd-block"><span id="cdDays">--</span><small>dagar</small></div>
+    <div class="cd-sep">:</div>
+    <div class="cd-block"><span id="cdHours">--</span><small>timar</small></div>
+    <div class="cd-sep">:</div>
+    <div class="cd-block"><span id="cdMins">--</span><small>min</small></div>
+    <div class="cd-sep">:</div>
+    <div class="cd-block"><span id="cdSecs">--</span><small>sek</small></div>
+  </div>
+</div>
+
+<main>
+  <div class="hero" style="padding-top:1.5rem;">
+    <div class="subtitle">AAAMMMSTEEER!!</div>
+    <h1>Drekka<br>ud Villi</h1>
+    <div class="dates">24. – 26. April 2026 &nbsp;·&nbsp; Amsterdam</div>
+
+    <!-- Info row -->
+    <div class="nav-buttons">
+      <a href="info.html" class="nav-btn">
+        <span class="btn-icon">📋</span>
+        Info
+      </a>
+      <a href="timeline.html" class="nav-btn">
+        <span class="btn-icon">🗓️</span>
+        Program
+      </a>
+      <a href="faq.html" class="nav-btn">
+        <span class="btn-icon">❓</span>
+        FAQ
+      </a>
+      <a href="pakkeliste.html" class="nav-btn">
+        <span class="btn-icon">🎒</span>
+        Pakkeliste
+      </a>
+      <a href="bingo.html" class="nav-btn">
+        <span class="btn-icon">🎰</span>
+        Bingo
+      </a>
+      <a href="wheel.html" class="nav-btn">
+        <span class="btn-icon">🎡</span>
+        Hjul
+      </a>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:2rem; text-align:center; border-color:#3a2a00;">
+    <p style="color:#888; font-size:0.95rem; line-height:1.7;">
+      Villi ska bli hund for life – å då e det vår jobb å sørga for at han glømme
+      helgå i Amsterdam. Kle på deg sølvstellet, bring magekapasiteten, å vær
+      klar for PATYPATY. 🍺🌷
+    </p>
+  </div>
+</main>
+
+<footer>Drekka ud Villi · Amsterdam 2026</footer>
+
+<script>
+(function() {
+  const TARGET = new Date('2026-04-24T07:00:00'); // 24. april 07:00 local time
+
+  function update() {
+    const now  = new Date();
+    const diff = TARGET - now;
+
+    if (diff <= 0) {
+      document.getElementById('countdownWrap').innerHTML =
+        '<div class="countdown-label" style="font-size:1.4rem;color:var(--gold)">🍺 Det e tid! PATYPATY! 🍺</div>';
+      return;
+    }
+
+    const days  = Math.floor(diff / 86400000);
+    const hours = Math.floor((diff % 86400000) / 3600000);
+    const mins  = Math.floor((diff % 3600000)  / 60000);
+    const secs  = Math.floor((diff % 60000)    / 1000);
+
+    document.getElementById('cdDays').textContent  = String(days).padStart(2,'0');
+    document.getElementById('cdHours').textContent = String(hours).padStart(2,'0');
+    document.getElementById('cdMins').textContent  = String(mins).padStart(2,'0');
+    document.getElementById('cdSecs').textContent  = String(secs).padStart(2,'0');
+
+    setTimeout(update, 1000);
+  }
+
+  update();
+})();
+</script>
+
+<script src="auth.js"></script>
+<script>requireGlobalAuth();</script>
+</body>
+</html>

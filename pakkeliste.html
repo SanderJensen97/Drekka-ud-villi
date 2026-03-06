@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pakkeliste – Drekka ud Villi</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .pack-intro {
+      color: #888;
+      font-size: 0.9rem;
+      margin-bottom: 1.5rem;
+      line-height: 1.6;
+    }
+
+    .pack-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    .pack-list li {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.55rem 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.95rem;
+      color: var(--text-light);
+      cursor: pointer;
+      user-select: none;
+      transition: color 0.15s;
+    }
+
+    .pack-list li:last-child {
+      border-bottom: none;
+    }
+
+    .pack-list li.checked {
+      color: #555;
+      text-decoration: line-through;
+    }
+
+    .pack-check {
+      width: 18px;
+      height: 18px;
+      border: 2px solid var(--border);
+      border-radius: 3px;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      transition: all 0.15s;
+      color: transparent;
+    }
+
+    li.checked .pack-check {
+      background: var(--gold);
+      border-color: var(--gold);
+      color: #000;
+    }
+
+    .pack-progress {
+      font-family: 'Oswald', sans-serif;
+      font-size: 0.8rem;
+      color: #666;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 0.75rem;
+    }
+
+    .pack-progress-bar {
+      height: 4px;
+      background: var(--border);
+      border-radius: 2px;
+      margin-bottom: 1.2rem;
+      overflow: hidden;
+    }
+
+    .pack-progress-fill {
+      height: 100%;
+      background: var(--gold);
+      border-radius: 2px;
+      transition: width 0.3s;
+    }
+
+    .pack-section-title {
+      font-family: 'Oswald', sans-serif;
+      font-size: 0.75rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--dark-gold);
+      margin: 1.2rem 0 0.4rem;
+    }
+
+    .pack-reset-btn {
+      margin-top: 1.2rem;
+      padding: 0.5rem 1.5rem;
+      background: transparent;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      color: #888;
+      font-family: 'Oswald', sans-serif;
+      font-size: 0.9rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: block;
+      width: 100%;
+    }
+
+    .pack-reset-btn:hover {
+      border-color: var(--deep-red);
+      color: #ff6666;
+    }
+
+    .pack-done-msg {
+      display: none;
+      margin-top: 1rem;
+      padding: 0.75rem;
+      background: rgba(201,168,76,0.12);
+      border: 1px solid var(--gold);
+      border-radius: 5px;
+      font-family: 'Oswald', sans-serif;
+      font-size: 1rem;
+      letter-spacing: 0.1em;
+      color: var(--gold);
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="logo-title">Drekka ud Villi</div>
+  <div class="logo-subtitle">Amsterdam &nbsp;·&nbsp; April 2026</div>
+</header>
+
+<nav>
+  <a href="index.html">Hjem</a>
+  <a href="info.html">Info</a>
+  <a href="timeline.html">Program</a>
+  <a href="bingo.html">Bingo</a>
+  <a href="wheel.html">Hjul</a>
+  <a href="pakkeliste.html" class="active">Pakkeliste</a>
+  <a href="faq.html">FAQ</a>
+</nav>
+
+<main>
+  <div class="card">
+    <h2>🎒 Pakkeliste</h2>
+    <p class="pack-intro">
+      Velg navnet ditt for å få din egen liste – avhuka punkter e lagra i nettlesaren din.
+    </p>
+
+    <!-- Name chips -->
+    <div class="participant-chips" id="chipContainer"></div>
+
+    <div id="listSection" style="display:none;">
+      <div class="pack-progress" id="progressLabel"></div>
+      <div class="pack-progress-bar"><div class="pack-progress-fill" id="progressFill"></div></div>
+
+      <ul class="pack-list" id="packList"></ul>
+
+      <div class="pack-done-msg" id="doneMsgEl">✅ Alt pakka – klar for PATYPATY! 🍺</div>
+      <button class="pack-reset-btn" onclick="resetList()">↺ Nullstill lista</button>
+    </div>
+  </div>
+</main>
+
+<footer>Drekka ud Villi · Amsterdam 2026</footer>
+
+<script>
+// ============================================================
+//  PACKING LIST
+// ============================================================
+
+const PARTICIPANTS = [
+  "Etti","Villi","Mikael","Ole","Tommy","Are","Jone",
+  "Bjelli","Kessa","Sylli","Heike","Mj","Håvi","Olav",
+  "Matti","Iden","Sweed","Ekka"
+];
+
+// Items grouped by category.
+// exclude: names who should NOT see this item (e.g. driver items)
+// include: ONLY these names see it (optional; if omitted = everyone)
+const ITEMS = [
+  // Dokumenter & pengar
+  { cat: "📄 Dokumenter & pengah", text: "ID-kort" },
+  { cat: "📄 Dokumenter & pengah", text: "Bankkort / kredittkort" },
+  { cat: "📄 Dokumenter & pengah", text: "Litt Euro kontant (til taxi, tips, kebab)" },
+
+  // Klede
+  { cat: "👕 Klede", text: "Undertøy (fredag + lørdag + søndag)" },
+  { cat: "👕 Klede", text: "T-skjorter / skjorter (2–3 stk)" },
+  { cat: "👕 Klede", text: "Bukse / jeans" },
+  { cat: "👕 Klede", text: "Finere antrekk" },
+  { cat: "👕 Klede", text: "Jakke / regnjakke (april i Amsterdam = uforutsigbart)" },
+  { cat: "👕 Klede", text: "Festsko / skoene du dansar i" },
+  { cat: "👕 Klede", text: "Sokker" },
+
+  // Toalettsaker
+  { cat: "🪥 Toalettsaker", text: "Tannbørste + tannkrem" },
+  { cat: "🪥 Toalettsaker", text: "Deodorant" },
+  { cat: "🪥 Toalettsaker", text: "Solkrem (Kun Bjelli og Iden)" },
+
+  // Helse & overliving
+  { cat: "💊 Helse & overliving", text: "Ibuprofen / Paracet" },
+  { cat: "💊 Helse & overliving", text: "Eventuell medisin (resept i original emballasje)" },
+
+  // Elektronikk
+  { cat: "🔌 Elektronikk", text: "Telefon + lader" },
+  { cat: "🔌 Elektronikk", text: "Powerbank (VIKTIG – lang dag, lite strøm)" },
+  { cat: "🔌 Elektronikk", text: "Ørepropper / høretelefoner" },
+  { cat: "🔌 Elektronikk", text: "Adapter (Nederland bruke Type C/F – same som Norge, OK)" },
+
+  // Misc
+  { cat: "🎉 Misc", text: "Godt humør og lav skamgrense" },
+  { cat: "🎉 Misc", text: "Solbriller" },
+  { cat: "🎉 Misc", text: "Kondom (Ekka 👀)" },
+];
+
+let currentName = '';
+
+// ---- Build chips ----
+const chipContainer = document.getElementById('chipContainer');
+PARTICIPANTS.forEach(name => {
+  const chip = document.createElement('button');
+  chip.className = 'chip';
+  chip.textContent = name === 'Villi' ? '👑 ' + name : name;
+  chip.onclick = () => loadList(name);
+  chipContainer.appendChild(chip);
+});
+
+// ---- Load list for a given name ----
+function loadList(name) {
+  currentName = name;
+  document.getElementById('listSection').style.display = 'block';
+  renderList();
+}
+
+// ---- Render ----
+function renderList() {
+  const ul      = document.getElementById('packList');
+  const checked = loadChecked(currentName);
+  ul.innerHTML  = '';
+
+  let lastCat = null;
+
+  ITEMS.forEach((item, idx) => {
+    // Category header
+    if (item.cat !== lastCat) {
+      lastCat = item.cat;
+      const header = document.createElement('li');
+      header.style.cssText = 'cursor:default; padding:0.8rem 0 0.2rem; border-bottom:none;';
+      header.innerHTML = `<span style="font-family:'Oswald',sans-serif; font-size:0.75rem;
+        letter-spacing:0.2em; text-transform:uppercase; color:var(--dark-gold);">${item.cat}</span>`;
+      ul.appendChild(header);
+    }
+
+    const li  = document.createElement('li');
+    const key = storageKey(currentName, idx);
+    const isChecked = checked.has(idx);
+
+    if (isChecked) li.classList.add('checked');
+
+    li.innerHTML = `<span class="pack-check">${isChecked ? '✓' : ''}</span><span>${item.text}</span>`;
+    li.onclick = () => toggleItem(li, idx);
+    ul.appendChild(li);
+  });
+
+  updateProgress(checked);
+}
+
+function toggleItem(li, idx) {
+  const checked = loadChecked(currentName);
+  if (checked.has(idx)) {
+    checked.delete(idx);
+    li.classList.remove('checked');
+    li.querySelector('.pack-check').textContent = '';
+  } else {
+    checked.add(idx);
+    li.classList.add('checked');
+    li.querySelector('.pack-check').textContent = '✓';
+  }
+  saveChecked(currentName, checked);
+  updateProgress(checked);
+}
+
+function updateProgress(checked) {
+  const total   = ITEMS.length;
+  const done    = checked.size;
+  const pct     = Math.round((done / total) * 100);
+
+  document.getElementById('progressLabel').textContent = `${done} / ${total} pakka (${pct}%)`;
+  document.getElementById('progressFill').style.width  = pct + '%';
+
+  const doneMsg = document.getElementById('doneMsgEl');
+  doneMsg.style.display = (done === total) ? 'block' : 'none';
+}
+
+function resetList() {
+  saveChecked(currentName, new Set());
+  renderList();
+}
+
+// ---- Persistence ----
+function storageKey(name, idx) {
+  return 'pack_' + name.trim().toLowerCase() + '_' + idx;
+}
+
+function loadChecked(name) {
+  const raw = localStorage.getItem('pack_' + name.trim().toLowerCase());
+  return raw ? new Set(JSON.parse(raw)) : new Set();
+}
+
+function saveChecked(name, set) {
+  localStorage.setItem('pack_' + name.trim().toLowerCase(), JSON.stringify([...set]));
+}
+</script>
+
+<script src="auth.js"></script>
+<script>requireGlobalAuth();</script>
+</body>
+</html>

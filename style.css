@@ -1,0 +1,605 @@
+/* ============================================
+   DREKKA UT VILLI - Global Styles
+   ============================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Viking&family=Oswald:wght@400;700&family=Roboto:wght@300;400;700&display=swap');
+
+:root {
+  --gold: #c9a84c;
+  --dark-gold: #8b6914;
+  --deep-red: #8b0000;
+  --dark-bg: #0d0d0d;
+  --card-bg: #1a1a1a;
+  --text-light: #f0e6d3;
+  --accent: #e8c46a;
+  --border: #3a3a2a;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: var(--dark-bg);
+  color: var(--text-light);
+  font-family: 'Roboto', sans-serif;
+  min-height: 100vh;
+  background-image:
+    radial-gradient(ellipse at top, #1a1000 0%, #0d0d0d 60%);
+}
+
+/* ---- Header ---- */
+.site-header {
+  text-align: center;
+  padding: 2rem 1rem 1rem;
+  border-bottom: 2px solid var(--gold);
+  background: linear-gradient(180deg, #1a0a00 0%, transparent 100%);
+}
+
+.site-header .logo-title {
+  font-family: 'Oswald', sans-serif;
+  font-size: clamp(2rem, 6vw, 4rem);
+  color: var(--gold);
+  text-shadow: 0 0 20px rgba(201,168,76,0.5), 2px 2px 4px #000;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+
+.site-header .logo-subtitle {
+  font-size: clamp(0.8rem, 2vw, 1.1rem);
+  color: var(--accent);
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  margin-top: 0.3rem;
+}
+
+/* ---- Nav Bar ---- */
+nav {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  padding: 1rem;
+  background: rgba(0,0,0,0.4);
+  border-bottom: 1px solid var(--border);
+}
+
+nav a {
+  color: var(--accent);
+  text-decoration: none;
+  font-family: 'Oswald', sans-serif;
+  font-size: 0.95rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 0.4rem 1rem;
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  transition: all 0.2s;
+}
+
+nav a:hover, nav a.active {
+  background: var(--gold);
+  color: #000;
+  border-color: var(--gold);
+}
+
+/* ---- Main content ---- */
+main {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
+/* ---- Cards ---- */
+.card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.card h2 {
+  font-family: 'Oswald', sans-serif;
+  color: var(--gold);
+  font-size: 1.4rem;
+  margin-bottom: 1rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0.5rem;
+}
+
+/* ---- Landing page hero buttons ---- */
+.hero {
+  text-align: center;
+  padding: 3rem 1rem 2rem;
+}
+
+.hero h1 {
+  font-family: 'Oswald', sans-serif;
+  font-size: clamp(2.5rem, 8vw, 5rem);
+  color: var(--gold);
+  text-shadow: 0 0 30px rgba(201,168,76,0.6), 3px 3px 6px #000;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  line-height: 1.1;
+}
+
+.hero .subtitle {
+  font-size: clamp(1rem, 3vw, 1.5rem);
+  color: var(--accent);
+  margin-top: 0.5rem;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+}
+
+.hero .dates {
+  margin-top: 1rem;
+  font-size: 1rem;
+  color: #999;
+  letter-spacing: 0.15em;
+}
+
+.nav-buttons {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.2rem;
+  margin-top: 3rem;
+}
+
+.nav-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1rem;
+  background: var(--card-bg);
+  border: 2px solid var(--border);
+  border-radius: 8px;
+  text-decoration: none;
+  color: var(--text-light);
+  font-family: 'Oswald', sans-serif;
+  font-size: 1.1rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  transition: all 0.25s;
+  cursor: pointer;
+}
+
+.nav-btn .btn-icon {
+  font-size: 2.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.nav-btn:hover {
+  border-color: var(--gold);
+  background: rgba(201,168,76,0.1);
+  color: var(--gold);
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(201,168,76,0.2);
+}
+
+/* ---- Info page ---- */
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.2rem;
+}
+
+.info-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+}
+
+.info-item .icon {
+  font-size: 1.5rem;
+  flex-shrink: 0;
+  margin-top: 0.1rem;
+}
+
+.info-item strong {
+  color: var(--gold);
+  display: block;
+  margin-bottom: 0.2rem;
+  font-family: 'Oswald', sans-serif;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  font-size: 0.85rem;
+}
+
+.cost-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 0.5rem;
+}
+
+.cost-table td {
+  padding: 0.5rem 0.75rem;
+  border-bottom: 1px solid var(--border);
+  font-size: 0.95rem;
+}
+
+.cost-table td:last-child {
+  text-align: right;
+  color: var(--gold);
+  font-weight: bold;
+}
+
+.cost-table tr:last-child td {
+  border-bottom: none;
+  font-size: 1.1rem;
+  color: var(--accent);
+}
+
+/* ---- Timeline ---- */
+.timeline-day {
+  margin-bottom: 2rem;
+}
+
+.timeline-day h2 {
+  font-family: 'Oswald', sans-serif;
+  color: var(--gold);
+  font-size: 1.6rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid var(--gold);
+}
+
+.timeline {
+  position: relative;
+  padding-left: 2rem;
+}
+
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 0.4rem;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: linear-gradient(to bottom, var(--gold), var(--deep-red));
+}
+
+.tl-item {
+  position: relative;
+  padding: 0.6rem 0 0.6rem 1rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.tl-item:last-child {
+  border-bottom: none;
+}
+
+.tl-item::before {
+  content: '';
+  position: absolute;
+  left: -1.65rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 10px;
+  height: 10px;
+  background: var(--gold);
+  border-radius: 50%;
+  border: 2px solid var(--dark-bg);
+}
+
+.tl-item.party::before {
+  background: var(--deep-red);
+  box-shadow: 0 0 8px rgba(139,0,0,0.8);
+}
+
+.tl-time {
+  font-size: 0.8rem;
+  color: #888;
+  font-family: 'Oswald', sans-serif;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.15rem;
+}
+
+.tl-event {
+  font-size: 1rem;
+  color: var(--text-light);
+}
+
+.tl-item.party .tl-event {
+  color: #ff6666;
+  font-weight: bold;
+  font-family: 'Oswald', sans-serif;
+  letter-spacing: 0.1em;
+  font-size: 1.1rem;
+}
+
+/* ---- Bingo ---- */
+.bingo-container {
+  text-align: center;
+}
+
+.name-input-section {
+  margin-bottom: 2rem;
+}
+
+.name-input-section label {
+  display: block;
+  font-family: 'Oswald', sans-serif;
+  font-size: 1rem;
+  color: var(--gold);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-bottom: 0.75rem;
+}
+
+.name-input-row {
+  display: flex;
+  justify-content: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.name-input-row input {
+  padding: 0.6rem 1.2rem;
+  background: var(--card-bg);
+  border: 2px solid var(--border);
+  border-radius: 4px;
+  color: var(--text-light);
+  font-size: 1.1rem;
+  font-family: 'Roboto', sans-serif;
+  outline: none;
+  transition: border-color 0.2s;
+  min-width: 200px;
+}
+
+.name-input-row input:focus {
+  border-color: var(--gold);
+}
+
+.name-input-row button {
+  padding: 0.6rem 1.5rem;
+  background: var(--gold);
+  color: #000;
+  border: none;
+  border-radius: 4px;
+  font-family: 'Oswald', sans-serif;
+  font-size: 1rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.name-input-row button:hover {
+  background: var(--accent);
+}
+
+.participant-chips {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.4rem;
+  margin-bottom: 1.5rem;
+}
+
+.chip {
+  padding: 0.35rem 0.9rem;
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  color: #aaa;
+}
+
+.chip:hover {
+  border-color: var(--gold);
+  color: var(--gold);
+}
+
+.bingo-card-wrap {
+  display: none;
+  width: 100%;
+}
+
+.bingo-card-wrap.visible {
+  display: block;
+  width: 100%;
+}
+
+.bingo-player-name {
+  font-family: 'Oswald', sans-serif;
+  font-size: 1.8rem;
+  color: var(--gold);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin-bottom: 1rem;
+}
+
+.bingo-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 4px;
+  background: var(--border);
+  padding: 4px;
+  border-radius: 6px;
+  border: 2px solid var(--gold);
+  width: 100%;
+}
+
+.bingo-header-row {
+  display: contents;
+}
+
+.bingo-header-cell {
+  background: var(--gold);
+  color: #000;
+  font-family: 'Oswald', sans-serif;
+  font-size: 1.3rem;
+  font-weight: 700;
+  padding: 0.5rem;
+  text-align: center;
+  border-radius: 3px;
+}
+
+.bingo-cell {
+  aspect-ratio: 1;
+  width: 100%;
+  background: var(--card-bg);
+  border-radius: 3px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: clamp(0.45rem, 2.2vw, 0.7rem);
+  font-family: 'Roboto', sans-serif;
+  cursor: pointer;
+  user-select: none;
+  transition: all 0.15s;
+  color: var(--text-light);
+  text-align: center;
+  padding: 3px;
+  line-height: 1.2;
+  overflow: hidden;
+}
+
+.bingo-cell:hover {
+  background: rgba(201,168,76,0.15);
+}
+
+.bingo-cell.marked {
+  background: var(--deep-red);
+  color: #fff;
+  box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
+  text-decoration: line-through;
+}
+
+.bingo-cell.free {
+  background: rgba(201,168,76,0.12);
+  border: 2px solid var(--gold);
+  color: var(--accent);
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.bingo-cell.free.marked {
+  background: var(--deep-red);
+  border: 2px solid var(--gold);
+  color: #fff;
+  box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
+  text-decoration: line-through;
+}
+
+.bingo-win-msg {
+  display: none;
+  margin-top: 1.5rem;
+  padding: 1rem;
+  background: rgba(139,0,0,0.3);
+  border: 2px solid var(--deep-red);
+  border-radius: 6px;
+  font-family: 'Oswald', sans-serif;
+  font-size: 1.5rem;
+  letter-spacing: 0.15em;
+  color: #ff6666;
+  animation: pulse 1s infinite alternate;
+}
+
+@keyframes pulse {
+  from { opacity: 0.7; }
+  to { opacity: 1; }
+}
+
+.reset-btn {
+  margin-top: 1rem;
+  padding: 0.5rem 1.5rem;
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  color: #888;
+  font-family: 'Oswald', sans-serif;
+  font-size: 0.9rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.reset-btn:hover {
+  border-color: var(--deep-red);
+  color: #ff6666;
+}
+
+/* ---- Countdown ---- */
+.countdown-wrap {
+  margin: 1.8rem auto 0;
+  text-align: center;
+}
+
+.countdown-label {
+  font-family: 'Oswald', sans-serif;
+  font-size: 0.85rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: #888;
+  margin-bottom: 0.6rem;
+}
+
+.countdown-blocks {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.cd-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 0.6rem 1rem;
+  min-width: 64px;
+}
+
+.cd-block span {
+  font-family: 'Oswald', sans-serif;
+  font-size: clamp(1.6rem, 5vw, 2.4rem);
+  color: var(--gold);
+  line-height: 1;
+  letter-spacing: 0.05em;
+}
+
+.cd-block small {
+  font-size: 0.65rem;
+  color: #666;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-top: 0.25rem;
+}
+
+.cd-sep {
+  font-family: 'Oswald', sans-serif;
+  font-size: 1.8rem;
+  color: var(--dark-gold);
+  line-height: 1;
+  margin-bottom: 1rem;
+}
+
+/* ---- Footer ---- */
+footer {
+  text-align: center;
+  padding: 2rem;
+  color: #444;
+  font-size: 0.8rem;
+  border-top: 1px solid var(--border);
+  margin-top: 3rem;
+}
+
+/* ---- Responsive ---- */
+@media (max-width: 480px) {
+  .nav-buttons {
+    grid-template-columns: 1fr 1fr;
+  }
+}
