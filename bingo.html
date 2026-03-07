@@ -247,33 +247,30 @@ function toggleCell(cell, idx) {
   checkEasterEgg();
 }
 
-// ---- Easter egg: swastika pattern ----
-const SWASTIKA = new Set([0,2,3,4,5,7,10,11,12,13,14,17,19,20,21,22,24]);
+// ---- Easter egg: special tile patterns ----
+const EGG_PATTERNS = [
+  new Set([0,2,3,4,5,7,10,11,12,13,14,17,19,20,21,22,24]),
+  new Set([0,1,2,4,7,9,10,11,12,13,14,15,17,20,22,23,24]),
+];
+
+function setsEqual(a, b) {
+  if (a.size !== b.size) return false;
+  for (const v of a) if (!b.has(v)) return false;
+  return true;
+}
 
 function checkEasterEgg() {
-  for (const idx of SWASTIKA) {
-    if (!markedCells.has(idx)) return;
-  }
-  // All swastika cells are marked — show popup
+  const matched = EGG_PATTERNS.some(pattern => setsEqual(markedCells, pattern));
+  if (!matched) return;
+
   const popup = document.createElement('div');
   popup.style.cssText = `
     position:fixed; inset:0; z-index:9999;
-    background:rgba(0,0,0,0.85);
+    background:rgba(0,0,0,0.9);
     display:flex; align-items:center; justify-content:center;
-    font-family:'Oswald',sans-serif;
     cursor:pointer;
   `;
-  popup.innerHTML = `
-    <div style="text-align:center; padding:2rem; max-width:340px;">
-      <div style="font-size:3rem; margin-bottom:1rem;">🤨</div>
-      <div style="font-size:1.4rem; color:#c9a84c; letter-spacing:0.1em;">
-        haha funny, edu 12 år eller?
-      </div>
-      <div style="margin-top:1.5rem; font-size:0.8rem; color:#555; letter-spacing:0.1em;">
-        (trykk for å lukke)
-      </div>
-    </div>
-  `;
+  popup.innerHTML = `<img src="images/mattikompis.jpg" style="max-width:90vw; max-height:90vh; object-fit:contain; border-radius:6px;" />`;
   popup.onclick = () => popup.remove();
   document.body.appendChild(popup);
 }
