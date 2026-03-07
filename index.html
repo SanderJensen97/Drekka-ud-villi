@@ -84,7 +84,7 @@
 
 <script>
 (function() {
-  const TARGET = new Date('2026-04-24T07:00:00'); // 24. april 07:00 local time
+  const TARGET = new Date(Date.now() + 5 * 60 * 1000); // TEST: 5 minutes from now
 
   function update() {
     const now  = new Date();
@@ -92,7 +92,7 @@
 
     if (diff <= 0) {
       document.getElementById('countdownWrap').innerHTML =
-        '<div class="countdown-label" style="font-size:1.4rem;color:var(--gold)">🍺 Det e tid! PATYPATY! 🍺</div>';
+        '<div class="countdown-label" style="font-size:2rem; font-family:\'Oswald\',sans-serif; letter-spacing:0.1em; color:var(--gold); animation:pulse 1s infinite alternate;">it is OOOONNNNNN!</div>';
       return;
     }
 
