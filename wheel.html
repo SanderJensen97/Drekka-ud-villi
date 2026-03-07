@@ -60,19 +60,23 @@
     .spin-btn:active { transform: scale(0.97); }
     .spin-btn:disabled { background: #444; color: #888; cursor: not-allowed; }
 
-    /* ---- Result banner ---- */
-    #resultBanner {
-      display: none;
+    /* ---- Wheel title / result banner (same element) ---- */
+    #wheelTitle {
+      text-align: center;
+      font-family: 'Oswald', sans-serif;
+      font-size: 2rem;
+      letter-spacing: 0.15em;
+      color: var(--gold);
       margin: 0 auto 1rem auto;
       padding: 0.75rem 1.5rem;
+      border-radius: 6px;
+      transition: color 0.3s, background 0.3s, border-color 0.3s;
+    }
+
+    #wheelTitle.result {
       background: rgba(139,0,0,0.35);
       border: 2px solid var(--deep-red);
-      border-radius: 6px;
-      font-family: 'Oswald', sans-serif;
-      font-size: 1.4rem;
-      letter-spacing: 0.15em;
       color: #ff8888;
-      text-align: center;
       animation: pulse 1s infinite alternate;
       max-width: 420px;
     }
@@ -222,8 +226,7 @@
 </nav>
 
 <main>
-  <h2 style="text-align:center; font-family:'Oswald',sans-serif; font-size:2rem; letter-spacing:0.15em; color:var(--gold); margin-bottom:0.75rem;">🎡 Lykkehjulet</h2>
-  <div id="resultBanner"></div>
+  <div id="wheelTitle">🎡 Lykkehjulet</div>
 
   <div class="wheel-layout">
 
@@ -388,7 +391,9 @@ function spin() {
 
   spinning = true;
   spinBtn.disabled = true;
-  document.getElementById('resultBanner').style.display = 'none';
+  const titleEl = document.getElementById('wheelTitle');
+  titleEl.textContent = '🎡 Lykkehjulet';
+  titleEl.classList.remove('result');
 
   // Random total rotation: 5–10 full turns + random offset
   const extra   = Math.random() * Math.PI * 2;
@@ -433,9 +438,9 @@ function announceWinner() {
   const idx     = Math.floor(pointer / slice) % n;
   const winner  = active[idx];
 
-  const banner = document.getElementById('resultBanner');
-  banner.textContent = `🎉 ${winner}! 🎉`;
-  banner.style.display = 'block';
+  const title = document.getElementById('wheelTitle');
+  title.textContent = `🎉 ${winner}! 🎉`;
+  title.classList.add('result');
 
   // Don't remove from wheel yet — stays until next spin
   pendingRemoval = winner;
@@ -471,7 +476,9 @@ function renderList() {
       btn.onclick     = () => {
         if (pendingRemoval === name) pendingRemoval = null;
         removeName(name);
-        document.getElementById('resultBanner').style.display = 'none';
+        const t = document.getElementById('wheelTitle');
+        t.textContent = '🎡 Lykkehjulet';
+        t.classList.remove('result');
       };
       li.appendChild(btn);
     }
@@ -506,14 +513,41 @@ document.getElementById('addNameInput').addEventListener('keydown', e => {
   if (e.key === 'Enter') addName();
 });
 
-// ---- Reset ----
+// ---- Reset (two-click confirmation) ----
+let resetPending = false;
+let resetTimer   = null;
+
 function resetWheel() {
   if (spinning) return;
+  const btn = document.querySelector('.reset-wheel-btn');
+
+  if (!resetPending) {
+    resetPending = true;
+    btn.textContent = 'Sikker? Trykk igjen';
+    btn.style.borderColor = 'var(--deep-red)';
+    btn.style.color = '#ff8888';
+    resetTimer = setTimeout(() => {
+      resetPending = false;
+      btn.textContent = '↺ Nullstill hjulet';
+      btn.style.borderColor = '';
+      btn.style.color = '';
+    }, 3000);
+    return;
+  }
+
+  clearTimeout(resetTimer);
+  resetPending = false;
+  btn.textContent = '↺ Nullstill hjulet';
+  btn.style.borderColor = '';
+  btn.style.color = '';
+
   masterList     = [...ALL_NAMES, ...extraNames];
   active         = [...masterList];
   angle          = 0;
   pendingRemoval = null;
-  document.getElementById('resultBanner').style.display = 'none';
+  const t = document.getElementById('wheelTitle');
+  t.textContent = '🎡 Lykkehjulet';
+  t.classList.remove('result');
   drawWheel(angle);
   renderList();
 }
