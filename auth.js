@@ -16,7 +16,7 @@ async function sha256(message) {
 }
 
 // ---- Overlay builder ----
-function buildOverlay(id, title, subtitle, onCorrect, storedHashCorrect, backUrl) {
+function buildOverlay(id, title, subtitle, onCorrect, storedHashCorrect, backUrl, errorMessages) {
   const overlay = document.createElement('div');
   overlay.id = id;
   overlay.style.cssText = `
@@ -82,6 +82,8 @@ function buildOverlay(id, title, subtitle, onCorrect, storedHashCorrect, backUrl
   const errEl = document.getElementById(`${id}_error`);
   const btn   = document.getElementById(`${id}_btn`);
 
+  let errorCount = 0;
+
   async function attempt() {
     const hash = await sha256(input.value.trim().toLowerCase());
     if (storedHashCorrect(hash)) {
@@ -89,7 +91,12 @@ function buildOverlay(id, title, subtitle, onCorrect, storedHashCorrect, backUrl
       overlay.remove();
       document.body.style.overflow = '';
     } else {
-      errEl.textContent = 'Feil passord. Prøv igjen.';
+      if (errorMessages && errorMessages.length > 0) {
+        errEl.textContent = errorMessages[errorCount % errorMessages.length];
+        errorCount++;
+      } else {
+        errEl.textContent = 'Feil passord. Prøv igjen.';
+      }
       input.value = '';
       input.focus();
     }
@@ -145,6 +152,20 @@ async function requireBingoAuth() {
     'Bingo starte når Sweed gir deg passordet',
     (hash) => sessionStorage.setItem('bingo_auth', hash),
     (hash) => hash === BINGO_CORRECT_HASH,
-    'index.html'
+    'index.html',
+    [
+      'du ekje så smart.. passordet ejo hårføner',
+      'hahahaha, du prøvde faktisk!',
+      'Gje deg, du komma inn ittekvert',
+      'fun fact, Gary Numan e 13 dager eldre enn Gary Oldman',
+      'viste du at du fise 10-20 ganger dagen',
+      'Faen så mye fritid du har då',
+      'Eg har sotte å skreve all disse responsene så eg har kanskje mer...',
+      'ny funfact: Potet va på et tidspunkt forbudt i Frankrike',
+      'Youtbe starta som datingside',
+      'Nå gidde eg ikkje mer, back to the top',
+      'or NOOT',
+      'For alt du vett så kan det ver passordet poppe opp om 20 forsøk te',
+    ]
   );
 }
