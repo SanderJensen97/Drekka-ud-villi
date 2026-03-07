@@ -424,6 +424,8 @@ function spin() {
   titleEl.textContent = '🎡 Lykkehjulet';
   titleEl.classList.remove('result');
 
+  const startAngle = angle;
+
   // Calculate total rotation — in hack mode aim at Villi's segment
   let total;
   const hackedAngle = document.getElementById('hackCheck').checked ? hackAngleForVilli() : null;
@@ -439,7 +441,6 @@ function spin() {
   }
   const duration = 4000 + Math.random() * 1500; // ms
   const start   = performance.now();
-  const startAngle = angle;
 
   function easeOut(t) {
     return 1 - Math.pow(1 - t, 4);
