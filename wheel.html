@@ -101,9 +101,7 @@
       font-size: 1rem;
       letter-spacing: 0.15em;
       text-transform: uppercase;
-      margin-bottom: 0.75rem;
-      border-bottom: 1px solid var(--border);
-      padding-bottom: 0.4rem;
+      margin-bottom: 0;
     }
 
     .name-list {
@@ -183,20 +181,31 @@
       color: #ff8888;
     }
 
+    .panel-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 0.75rem;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 0.4rem;
+    }
+
+    .panel-header h3 {
+      margin-bottom: 0;
+      border-bottom: none;
+      padding-bottom: 0;
+    }
+
     .hack-label {
-      display: block;
-      margin-top: 0.75rem;
-      padding-top: 0.5rem;
-      border-top: 1px solid #1f1f1f;
       font-family: 'Oswald', sans-serif;
       font-size: 0.75rem;
       letter-spacing: 0.1em;
-      color: #1e1e1e;
+      color: #292929;
       cursor: pointer;
       user-select: none;
     }
 
-    .hack-label input { cursor: pointer; accent-color: #1e1e1e; opacity: 0.08; transition: opacity 0.2s; }
+    .hack-label input { cursor: pointer; accent-color: #1e1e1e; opacity: 0.02; transition: opacity 0.2s; }
     .hack-label input:checked { opacity: 1; }
 
     .count-label {
@@ -276,7 +285,12 @@
 
     <!-- Name sidebar -->
     <div class="name-panel card">
-      <h3>Deltakere</h3>
+      <div class="panel-header">
+        <h3>Deltakere</h3>
+        <label class="hack-label">
+          <input type="checkbox" id="hackCheck" /> hack
+        </label>
+      </div>
       <div class="count-label" id="countLabel"></div>
       <div class="add-name-row">
         <input type="text" id="addNameInput" placeholder="Legg til navn..." autocomplete="off" />
@@ -284,9 +298,6 @@
       </div>
       <button class="full-reset-btn" onclick="fullResetWheel()">↺ Tilbakestill alle</button>
       <ul class="name-list" id="nameList"></ul>
-      <label class="hack-label">
-        <input type="checkbox" id="hackCheck" /> hack
-      </label>
     </div>
 
   </div>
