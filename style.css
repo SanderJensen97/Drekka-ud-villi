@@ -47,6 +47,15 @@ body {
   text-transform: uppercase;
 }
 
+.site-header a.logo-title {
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.site-header a.logo-title:hover {
+  color: var(--accent);
+}
+
 .site-header .logo-subtitle {
   font-size: clamp(0.8rem, 2vw, 1.1rem);
   color: var(--accent);

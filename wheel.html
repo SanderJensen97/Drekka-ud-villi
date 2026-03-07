@@ -69,16 +69,16 @@
       color: var(--gold);
       margin: 0 auto 1rem auto;
       padding: 0.75rem 1.5rem;
+      border: 2px solid transparent;
       border-radius: 6px;
       transition: color 0.3s, background 0.3s, border-color 0.3s;
     }
 
     #wheelTitle.result {
       background: rgba(139,0,0,0.35);
-      border: 2px solid var(--deep-red);
+      border-color: var(--deep-red);
       color: #ff8888;
       animation: pulse 1s infinite alternate;
-      max-width: 420px;
     }
 
     /* ---- Sidebar: name list ---- */
@@ -211,18 +211,17 @@
 <body>
 
 <header class="site-header">
-  <div class="logo-title">Drekka ud Villi</div>
+  <a href="index.html" class="logo-title">Drekka ud Villi</a>
   <div class="logo-subtitle">Amsterdam &nbsp;·&nbsp; April 2026</div>
 </header>
 
 <nav>
-  <a href="index.html">Hjem</a>
   <a href="info.html">Info</a>
   <a href="timeline.html">Program</a>
-  <a href="bingo.html">Bingo</a>
-  <a href="wheel.html" class="active">Hjul</a>
   <a href="pakkeliste.html">Pakkeliste</a>
   <a href="faq.html">FAQ</a>
+  <a href="wheel.html" class="active">Spinn</a>
+  <a href="bingo.html">Bingo</a>
 </nav>
 
 <main>
