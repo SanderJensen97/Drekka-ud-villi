@@ -27,26 +27,9 @@
 
     <div class="card name-input-section">
       <h2>🎰 Ditt Bingokort</h2>
-      <p style="color:#888; font-size:0.9rem; margin-bottom:1.2rem;">
-        Skriv inn namnet ditt for å få ditt unike bingokort!
-      </p>
 
       <!-- Quick-pick chips -->
       <div class="participant-chips" id="chipContainer"></div>
-
-      <div class="name-input-row">
-        <input type="text" id="nameInput" placeholder="Skriv namn her..." autocomplete="off" />
-        <button onclick="generateCard()">Hent kort</button>
-      </div>
-    </div>
-
-    <!-- Storage info -->
-    <div style="margin-bottom:1.5rem; padding:0.85rem 1.1rem; background:#111;
-                border:1px solid #2a2a1a; border-radius:5px; font-size:0.85rem;
-                color:#777; line-height:1.6; text-align:left;">
-      💾 <strong style="color:#999;">Framdriften din e lagra i nettleseren din</strong> –
-      så lenge du bruke samme nettleser og samme enhet holde kortet seg oppdatert.
-      Bytte du te ein aen nettleser, telefon eller privat/inkognito-fane starte kortet på nytt.
     </div>
 
     <!-- The card itself -->
@@ -66,6 +49,15 @@
       <div class="bingo-win-msg" id="winMsg">🎉 BINGO MAFAKKA!! 🎉</div>
       <br>
       <button class="reset-btn" onclick="resetCard()">Nullstill kort</button>
+    </div>
+
+    <!-- Storage info -->
+    <div style="margin-top:1.5rem; padding:0.85rem 1.1rem; background:#111;
+                border:1px solid #2a2a1a; border-radius:5px; font-size:0.85rem;
+                color:#777; line-height:1.6; text-align:left;">
+      💾 <strong style="color:#999;">Framdriften din e lagra i nettleseren din</strong> –
+      så lenge du bruke samme nettleser og same enhet holde kortet seg oppdatert.
+      Bytte du te ein aen nettleser, telefon eller privat/inkognito-fane starte kortet på nytt.
     </div>
 
   </div>
@@ -196,16 +188,12 @@ PARTICIPANTS.forEach(name => {
   const chip = document.createElement('button');
   chip.className = 'chip';
   chip.textContent = name === 'Villi' ? '👑 ' + name : name;
-  chip.onclick = () => {
-    document.getElementById('nameInput').value = name;
-    generateCard();
-  };
+  chip.onclick = () => generateCard(name);
   chipContainer.appendChild(chip);
 });
 
 // ---- Generate / render ----
-function generateCard() {
-  const raw = document.getElementById('nameInput').value.trim();
+function generateCard(raw) {
   if (!raw) return;
 
   currentName = raw;
@@ -292,13 +280,9 @@ function loadMarked(name) {
 function resetCard() {
   markedCells = new Set();
   saveMarked(currentName, markedCells);
-  generateCard();
+  generateCard(currentName);
 }
 
-// ---- Allow Enter key ----
-document.getElementById('nameInput').addEventListener('keydown', e => {
-  if (e.key === 'Enter') generateCard();
-});
 </script>
 
 <script src="auth.js"></script>
