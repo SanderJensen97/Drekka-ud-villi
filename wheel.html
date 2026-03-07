@@ -163,16 +163,19 @@
     }
 
     .hack-label {
-      margin-top: 0.5rem;
+      display: block;
+      margin-top: 0.75rem;
+      padding-top: 0.5rem;
+      border-top: 1px solid #1a1a1a;
       font-family: 'Oswald', sans-serif;
       font-size: 0.75rem;
       letter-spacing: 0.1em;
-      color: #2a2a2a;
+      color: #1e1e1e;
       cursor: pointer;
       user-select: none;
     }
 
-    .hack-label input { cursor: pointer; accent-color: #2a2a2a; }
+    .hack-label input { cursor: pointer; accent-color: #1e1e1e; }
 
     .count-label {
       font-size: 0.8rem;
@@ -247,9 +250,6 @@
       <canvas id="wheelCanvas" width="420" height="420"></canvas>
       <button class="spin-btn" id="spinBtn" onclick="spin()">SPINN!</button>
       <button class="reset-wheel-btn" onclick="resetWheel()">↺ Nullstill hjulet</button>
-      <label class="hack-label">
-        <input type="checkbox" id="hackCheck" /> hack
-      </label>
     </div>
 
     <!-- Name sidebar -->
@@ -261,6 +261,9 @@
         <button onclick="addName()">+ Legg til</button>
       </div>
       <ul class="name-list" id="nameList"></ul>
+      <label class="hack-label">
+        <input type="checkbox" id="hackCheck" /> hack
+      </label>
     </div>
 
   </div>
@@ -421,9 +424,19 @@ function spin() {
   titleEl.textContent = '🎡 Lykkehjulet';
   titleEl.classList.remove('result');
 
-  // Random total rotation: 5–10 full turns + random offset
-  const extra   = Math.random() * Math.PI * 2;
-  const total   = (Math.PI * 2) * (5 + Math.random() * 5) + extra;
+  // Calculate total rotation — in hack mode aim at Villi's segment
+  let total;
+  const hackedAngle = document.getElementById('hackCheck').checked ? hackAngleForVilli() : null;
+  if (hackedAngle !== null) {
+    const TAU = Math.PI * 2;
+    const diff = ((hackedAngle - (startAngle % TAU)) % TAU + TAU) % TAU;
+    const minSpins = 5 + Math.random() * 5;
+    const extraSpins = Math.ceil(minSpins - diff / TAU);
+    total = diff + extraSpins * TAU;
+  } else {
+    const extra = Math.random() * Math.PI * 2;
+    total = (Math.PI * 2) * (5 + Math.random() * 5) + extra;
+  }
   const duration = 4000 + Math.random() * 1500; // ms
   const start   = performance.now();
   const startAngle = angle;
@@ -442,11 +455,6 @@ function spin() {
       requestAnimationFrame(frame);
     } else {
       angle = angle % (Math.PI * 2);
-      // Hack mode: snap final angle to land on Villi
-      if (document.getElementById('hackCheck').checked) {
-        const hackedAngle = hackAngleForVilli();
-        if (hackedAngle !== null) angle = hackedAngle;
-      }
       drawWheel(angle);
       spinning = false;
       spinBtn.disabled = false;
