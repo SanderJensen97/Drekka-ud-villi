@@ -148,7 +148,7 @@ async function requireBingoAuth() {
 
   buildOverlay(
     'bingo_overlay',
-    'Bingo ee låst 🎰',
+    'Bingo e låst 🎰',
     'Bingo starte når Sweed gir deg passordet',
     (hash) => sessionStorage.setItem('bingo_auth', hash),
     (hash) => hash === BINGO_CORRECT_HASH,
