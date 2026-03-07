@@ -81,7 +81,7 @@
 
       <div class="tl-item party">
         <div class="tl-time">21:00 –</div>
-        <div class="tl-event">🔥 PATYPATY 🔥</div>
+        <div class="tl-event" onclick="showPatypaty()">🔥 PATYPATY 🔥</div>
       </div>
 
     </div>
@@ -129,7 +129,7 @@
 
       <div class="tl-item party">
         <div class="tl-time">21:00 –</div>
-        <div class="tl-event">🔥 PATYPATY 🔥</div>
+        <div class="tl-event" onclick="showPatypaty()">🔥 PATYPATY 🔥</div>
       </div>
 
     </div>
@@ -179,5 +179,20 @@
 
 <script src="auth.js"></script>
 <script>requireGlobalAuth();</script>
+
+<script>
+function showPatypaty() {
+  const popup = document.createElement('div');
+  popup.style.cssText = `
+    position:fixed; inset:0; z-index:9999;
+    background:rgba(0,0,0,0.9);
+    display:flex; align-items:center; justify-content:center;
+    cursor:pointer;
+  `;
+  popup.innerHTML = `<img src="patypaty.jpg" style="max-width:90vw; max-height:90vh; object-fit:contain; border-radius:6px;" />`;
+  popup.onclick = () => popup.remove();
+  document.body.appendChild(popup);
+}
+</script>
 </body>
 </html>
