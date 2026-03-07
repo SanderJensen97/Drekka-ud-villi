@@ -6,13 +6,28 @@
   <title>Dice – Drekka ud Villi</title>
   <link rel="stylesheet" href="style.css" />
   <style>
-    .dice-page-title {
+    .dice-header {
+      position: relative;
       text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .dice-page-title {
       font-family: 'Oswald', sans-serif;
       font-size: 2rem;
       letter-spacing: 0.15em;
       color: var(--gold);
-      margin-bottom: 2rem;
+    }
+
+    .dice-sum {
+      position: absolute;
+      right: 2rem;
+      top: 50%;
+      transform: translateY(-50%);
+      font-family: 'Oswald', sans-serif;
+      font-size: 2rem;
+      letter-spacing: 0.15em;
+      color: var(--gold);
     }
 
     .dice-area {
@@ -52,7 +67,7 @@
     }
 
     .die.rolling {
-      animation: diceRoll 0.65s ease-out;
+      animation: diceRoll 0.975s ease-out;
       cursor: not-allowed;
       pointer-events: none;
     }
@@ -169,7 +184,10 @@
 </nav>
 
 <main>
-  <div class="dice-page-title">Dice</div>
+  <div class="dice-header">
+    <span class="dice-page-title">Dice</span>
+    <span class="dice-sum" id="diceSum"></span>
+  </div>
 
   <div class="dice-area" id="diceArea"></div>
 
@@ -181,7 +199,7 @@
     <button class="dice-control-btn" id="plusBtn" onclick="changeDiceCount(1)">+</button>
   </div>
 
-  <div class="dice-hint">Klikk på en terning eller trykk KAST!</div>
+  <div class="dice-hint">Klikk på ein terning eller trykk KAST!</div>
 </main>
 
 <footer>Drekka ud Villi · Amsterdam 2026</footer>
@@ -202,6 +220,12 @@ const FACE_DOTS = {
 
 let diceCount = 1;
 let rolling = false;
+let diceValues = [1];
+
+function updateSum() {
+  const sum = diceValues.slice(0, diceCount).reduce((a, b) => a + b, 0);
+  document.getElementById('diceSum').textContent = sum;
+}
 
 function createDie(id) {
   const die = document.createElement('div');
@@ -224,6 +248,8 @@ function setDieFace(id, value) {
   die.querySelectorAll('.dot').forEach((dot, i) => {
     dot.classList.toggle('hidden', !activeCells.includes(i));
   });
+  diceValues[id] = value;
+  updateSum();
 }
 
 function rollDie(id) {
@@ -237,7 +263,7 @@ function rollDie(id) {
   let ticks = 0;
   const interval = setInterval(() => {
     setDieFace(id, Math.ceil(Math.random() * 6));
-    if (++ticks >= 8) clearInterval(interval);
+    if (++ticks >= 12) clearInterval(interval);
   }, 70);
 
   setTimeout(() => {
@@ -245,7 +271,7 @@ function rollDie(id) {
     setDieFace(id, Math.ceil(Math.random() * 6));
     rolling = false;
     document.getElementById('rollAllBtn').disabled = false;
-  }, 650);
+  }, 975);
 }
 
 function rollAll() {
@@ -259,7 +285,7 @@ function rollAll() {
   let ticks = 0;
   const interval = setInterval(() => {
     ids.forEach(id => setDieFace(id, Math.ceil(Math.random() * 6)));
-    if (++ticks >= 8) clearInterval(interval);
+    if (++ticks >= 12) clearInterval(interval);
   }, 70);
 
   setTimeout(() => {
@@ -269,18 +295,19 @@ function rollAll() {
     });
     rolling = false;
     document.getElementById('rollAllBtn').disabled = false;
-  }, 650);
+  }, 975);
 }
 
 function changeDiceCount(delta) {
   const next = diceCount + delta;
-  if (next < 1 || next > 3) return;
+  if (next < 1 || next > 4) return;
   diceCount = next;
   renderDice();
   updateControls();
 }
 
 function renderDice() {
+  diceValues = new Array(diceCount).fill(1);
   const area = document.getElementById('diceArea');
   area.innerHTML = '';
   for (let i = 0; i < diceCount; i++) {
@@ -293,7 +320,7 @@ function renderDice() {
 function updateControls() {
   document.getElementById('diceCountLabel').textContent = diceCount;
   document.getElementById('minusBtn').disabled = diceCount <= 1;
-  document.getElementById('plusBtn').disabled = diceCount >= 3;
+  document.getElementById('plusBtn').disabled = diceCount >= 4;
 }
 
 renderDice();
