@@ -162,6 +162,27 @@
       color: var(--gold);
     }
 
+    .full-reset-btn {
+      width: 100%;
+      padding: 0.4rem;
+      margin-bottom: 0.6rem;
+      background: transparent;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      color: #666;
+      font-family: 'Oswald', sans-serif;
+      font-size: 0.8rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .full-reset-btn:hover {
+      border-color: var(--deep-red);
+      color: #ff8888;
+    }
+
     .hack-label {
       display: block;
       margin-top: 0.75rem;
@@ -260,6 +281,7 @@
         <input type="text" id="addNameInput" placeholder="Legg til navn..." autocomplete="off" />
         <button onclick="addName()">+ Legg til</button>
       </div>
+      <button class="full-reset-btn" onclick="fullResetWheel()">↺ Tilbakestill alle</button>
       <ul class="name-list" id="nameList"></ul>
       <label class="hack-label">
         <input type="checkbox" id="hackCheck" /> hack
@@ -296,12 +318,13 @@ const PALETTE = [
 ];
 
 // Master list (ALL_NAMES + any extras added at runtime)
-let masterList     = [...ALL_NAMES];
-let extraNames     = [];            // names added by user
-let active         = [...ALL_NAMES];
-let spinning       = false;
-let angle          = 0;
-let pendingRemoval = null;          // winner waiting to be removed on next spin
+let masterList      = [...ALL_NAMES];
+let extraNames      = [];            // names added by user
+let active          = [...ALL_NAMES];
+let manuallyRemoved = new Set();     // names removed via ✕ button
+let spinning        = false;
+let angle           = 0;
+let pendingRemoval  = null;          // winner waiting to be removed on next spin
 
 const canvas  = document.getElementById('wheelCanvas');
 const ctx     = canvas.getContext('2d');
@@ -516,6 +539,7 @@ function renderList() {
       btn.textContent = '✕';
       btn.onclick     = () => {
         if (pendingRemoval === name) pendingRemoval = null;
+        manuallyRemoved.add(name);
         removeName(name);
         const t = document.getElementById('wheelTitle');
         t.textContent = '🎡 Lykkehjulet';
@@ -554,7 +578,7 @@ document.getElementById('addNameInput').addEventListener('keydown', e => {
   if (e.key === 'Enter') addName();
 });
 
-// ---- Reset (two-click confirmation) ----
+// ---- Soft reset: restore spin-removed only, keep manually removed out ----
 let resetPending = false;
 let resetTimer   = null;
 
@@ -582,10 +606,24 @@ function resetWheel() {
   btn.style.borderColor = '';
   btn.style.color = '';
 
-  masterList     = [...ALL_NAMES, ...extraNames];
-  active         = [...masterList];
-  angle          = 0;
+  // Restore everyone except those manually removed
+  active         = masterList.filter(n => !manuallyRemoved.has(n));
   pendingRemoval = null;
+  const t = document.getElementById('wheelTitle');
+  t.textContent = '🎡 Lykkehjulet';
+  t.classList.remove('result');
+  drawWheel(angle);
+  renderList();
+}
+
+// ---- Full reset: restore ALL participants ----
+function fullResetWheel() {
+  if (spinning) return;
+  masterList      = [...ALL_NAMES, ...extraNames];
+  active          = [...masterList];
+  manuallyRemoved.clear();
+  angle           = 0;
+  pendingRemoval  = null;
   const t = document.getElementById('wheelTitle');
   t.textContent = '🎡 Lykkehjulet';
   t.classList.remove('result');
