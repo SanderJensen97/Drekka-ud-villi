@@ -63,7 +63,7 @@
     /* ---- Result banner ---- */
     #resultBanner {
       display: none;
-      margin-top: 1rem;
+      margin: 0 auto 1rem auto;
       padding: 0.75rem 1.5rem;
       background: rgba(139,0,0,0.35);
       border: 2px solid var(--deep-red);
@@ -74,13 +74,21 @@
       color: #ff8888;
       text-align: center;
       animation: pulse 1s infinite alternate;
+      max-width: 420px;
     }
 
     /* ---- Sidebar: name list ---- */
     .name-panel {
       flex: 1;
-      min-width: 200px;
-      max-width: 280px;
+      min-width: 260px;
+      max-width: 340px;
+    }
+
+    @media (max-width: 600px) {
+      .name-panel {
+        max-width: 100%;
+        width: 100%;
+      }
     }
 
     .name-panel h3 {
@@ -98,8 +106,8 @@
       list-style: none;
       margin: 0 0 1rem 0;
       padding: 0;
-      max-height: 420px;
-      overflow-y: auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
     }
 
     .name-list li {
@@ -131,8 +139,8 @@
     .remove-btn:hover { color: var(--deep-red); }
 
     .reset-wheel-btn {
-      width: 100%;
-      padding: 0.5rem;
+      margin-top: 0.6rem;
+      padding: 0.45rem 1.5rem;
       background: transparent;
       border: 1px solid var(--border);
       border-radius: 4px;
@@ -214,9 +222,8 @@
 </nav>
 
 <main>
-  <div class="card" style="margin-bottom:1.5rem;">
-    <h2>🎡 Lykkehjulet</h2>
-  </div>
+  <h2 style="text-align:center; font-family:'Oswald',sans-serif; font-size:2rem; letter-spacing:0.15em; color:var(--gold); margin-bottom:0.75rem;">🎡 Lykkehjulet</h2>
+  <div id="resultBanner"></div>
 
   <div class="wheel-layout">
 
@@ -224,8 +231,8 @@
     <div class="wheel-wrap">
       <div class="wheel-pointer"></div>
       <canvas id="wheelCanvas" width="420" height="420"></canvas>
-      <button class="spin-btn" id="spinBtn" onclick="spin()">SPIN!</button>
-      <div id="resultBanner"></div>
+      <button class="spin-btn" id="spinBtn" onclick="spin()">SPINN!</button>
+      <button class="reset-wheel-btn" onclick="resetWheel()">↺ Nullstill hjulet</button>
     </div>
 
     <!-- Name sidebar -->
@@ -237,7 +244,6 @@
         <button onclick="addName()">+ Legg til</button>
       </div>
       <ul class="name-list" id="nameList"></ul>
-      <button class="reset-wheel-btn" onclick="resetWheel()">↺ Nullstill hjulet</button>
     </div>
 
   </div>
@@ -270,11 +276,12 @@ const PALETTE = [
 ];
 
 // Master list (ALL_NAMES + any extras added at runtime)
-let masterList  = [...ALL_NAMES];
-let extraNames  = [];            // names added by user
-let active      = [...ALL_NAMES];
-let spinning    = false;
-let angle       = 0;
+let masterList     = [...ALL_NAMES];
+let extraNames     = [];            // names added by user
+let active         = [...ALL_NAMES];
+let spinning       = false;
+let angle          = 0;
+let pendingRemoval = null;          // winner waiting to be removed on next spin
 
 const canvas  = document.getElementById('wheelCanvas');
 const ctx     = canvas.getContext('2d');
@@ -369,6 +376,16 @@ function var_gold() { return '#c9a84c'; }
 // ---- Spin ----
 function spin() {
   if (spinning || active.length === 0) return;
+
+  // Remove previous winner now that a new spin is starting
+  if (pendingRemoval) {
+    active = active.filter(n => n !== pendingRemoval);
+    pendingRemoval = null;
+    renderList();
+    drawWheel(angle);
+    if (active.length === 0) return;
+  }
+
   spinning = true;
   spinBtn.disabled = true;
   document.getElementById('resultBanner').style.display = 'none';
@@ -420,7 +437,9 @@ function announceWinner() {
   banner.textContent = `🎉 ${winner}! 🎉`;
   banner.style.display = 'block';
 
-  removeName(winner);
+  // Don't remove from wheel yet — stays until next spin
+  pendingRemoval = winner;
+  renderList();
 }
 
 // ---- Remove name ----
@@ -447,9 +466,10 @@ function renderList() {
     if (isOn) {
       const btn = document.createElement('button');
       btn.className   = 'remove-btn';
-      btn.title       = 'Fjern frå hjulet';
+      btn.title       = 'Fjern fra hjulet';
       btn.textContent = '✕';
       btn.onclick     = () => {
+        if (pendingRemoval === name) pendingRemoval = null;
         removeName(name);
         document.getElementById('resultBanner').style.display = 'none';
       };
@@ -489,9 +509,10 @@ document.getElementById('addNameInput').addEventListener('keydown', e => {
 // ---- Reset ----
 function resetWheel() {
   if (spinning) return;
-  masterList  = [...ALL_NAMES, ...extraNames];
-  active      = [...masterList];
-  angle       = 0;
+  masterList     = [...ALL_NAMES, ...extraNames];
+  active         = [...masterList];
+  angle          = 0;
+  pendingRemoval = null;
   document.getElementById('resultBanner').style.display = 'none';
   drawWheel(angle);
   renderList();

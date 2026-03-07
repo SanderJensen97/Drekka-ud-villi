@@ -32,11 +32,11 @@ function buildOverlay(id, title, subtitle, onCorrect, storedHashCorrect, backUrl
     <div style="text-align:center; max-width:380px; width:100%;">
       <div style="font-size:clamp(1.8rem,6vw,3rem); color:#c9a84c; letter-spacing:0.2em;
                   text-transform:uppercase; text-shadow:0 0 20px rgba(201,168,76,0.5);">
-        Drekka ut Villi
+        Drekka ud Villi
       </div>
       <div style="color:#e8c46a; letter-spacing:0.3em; font-size:0.9rem;
                   text-transform:uppercase; margin-bottom:2.5rem;">
-        Amsterdam · April 2026
+        Kongo · Mai 2026
       </div>
 
       <div style="font-size:1.1rem; color:#f0e6d3; margin-bottom:0.4rem; letter-spacing:0.1em;">
@@ -61,7 +61,7 @@ function buildOverlay(id, title, subtitle, onCorrect, storedHashCorrect, backUrl
                border:none; border-radius:4px; font-family:'Oswald',sans-serif;
                font-size:1rem; letter-spacing:0.15em; text-transform:uppercase;
                cursor:pointer;">
-        Kom inn
+        Stig på
       </button>
 
       ${backUrl ? `
@@ -120,7 +120,7 @@ async function requireGlobalAuth() {
   buildOverlay(
     'global_overlay',
     'Privat side',
-    'Skriv inn passordet for å koma inn',
+    'Skriv inn passordet for å komma inn',
     (hash) => sessionStorage.setItem('global_auth', hash),
     (hash) => hash === GLOBAL_CORRECT_HASH
   );
@@ -141,7 +141,7 @@ async function requireBingoAuth() {
 
   buildOverlay(
     'bingo_overlay',
-    'Bingo er låst 🎰',
+    'Bingo ee låst 🎰',
     'Bingo starte når Sweed gir deg passordet',
     (hash) => sessionStorage.setItem('bingo_auth', hash),
     (hash) => hash === BINGO_CORRECT_HASH,
