@@ -162,6 +162,18 @@
       color: var(--gold);
     }
 
+    .hack-label {
+      margin-top: 0.5rem;
+      font-family: 'Oswald', sans-serif;
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+      color: #2a2a2a;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .hack-label input { cursor: pointer; accent-color: #2a2a2a; }
+
     .count-label {
       font-size: 0.8rem;
       color: #666;
@@ -235,6 +247,9 @@
       <canvas id="wheelCanvas" width="420" height="420"></canvas>
       <button class="spin-btn" id="spinBtn" onclick="spin()">SPINN!</button>
       <button class="reset-wheel-btn" onclick="resetWheel()">↺ Nullstill hjulet</button>
+      <label class="hack-label">
+        <input type="checkbox" id="hackCheck" /> hack
+      </label>
     </div>
 
     <!-- Name sidebar -->
@@ -375,6 +390,18 @@ function drawWheel(rot) {
 
 function var_gold() { return '#c9a84c'; }
 
+// ---- Hack: compute angle that puts Villi under the pointer ----
+function hackAngleForVilli() {
+  const villiIdx = active.indexOf('Villi');
+  if (villiIdx < 0) return null;
+  const slice = (Math.PI * 2) / active.length;
+  // Target middle of Villi's segment under the pointer at -π/2
+  const targetPointer = villiIdx * slice + slice * 0.5;
+  let a = (-Math.PI / 2 + Math.PI * 2 * 100 - targetPointer) % (Math.PI * 2);
+  if (a < 0) a += Math.PI * 2;
+  return a;
+}
+
 // ---- Spin ----
 function spin() {
   if (spinning || active.length === 0) return;
@@ -415,6 +442,12 @@ function spin() {
       requestAnimationFrame(frame);
     } else {
       angle = angle % (Math.PI * 2);
+      // Hack mode: snap final angle to land on Villi
+      if (document.getElementById('hackCheck').checked) {
+        const hackedAngle = hackAngleForVilli();
+        if (hackedAngle !== null) angle = hackedAngle;
+      }
+      drawWheel(angle);
       spinning = false;
       spinBtn.disabled = false;
       announceWinner();
