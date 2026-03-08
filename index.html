@@ -103,6 +103,7 @@
 <script>
 // ---- Compliment generator ----
 const COMPLIMENTS = [
+  'Du e definisjonen på peak male specie',
   'Du e ein av de kulaste eg kjenne.',
   'Verden e ein bedre plass med deg i ann.',
   'Du har et smil som lyse opp rommet.',
@@ -123,13 +124,25 @@ const COMPLIMENTS = [
   // 👇 Legg til fleire komplimentar her
 ];
 
-let lastIdx = -1;
+const HISTORY_SIZE = 10;
+const recentIdxs = [];
+let firstRun = true;
 
 function newCompliment() {
   const el = document.getElementById('complimentText');
   let idx;
-  do { idx = Math.floor(Math.random() * COMPLIMENTS.length); } while (idx === lastIdx && COMPLIMENTS.length > 1);
-  lastIdx = idx;
+
+  if (firstRun) {
+    idx = 0;
+    firstRun = false;
+  } else {
+    const available = COMPLIMENTS.map((_, i) => i).filter(i => !recentIdxs.includes(i));
+    idx = available[Math.floor(Math.random() * available.length)];
+  }
+
+  recentIdxs.push(idx);
+  if (recentIdxs.length > HISTORY_SIZE) recentIdxs.shift();
+
   el.style.opacity = '0';
   setTimeout(() => {
     el.textContent = COMPLIMENTS[idx];
