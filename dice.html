@@ -164,6 +164,35 @@
       margin-top: 1rem;
       letter-spacing: 0.05em;
     }
+
+    .easter-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.85);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+    }
+
+    .easter-overlay.visible {
+      display: flex;
+    }
+
+    .easter-overlay img {
+      max-width: 90vw;
+      max-height: 85vh;
+      border-radius: 10px;
+      border: 3px solid var(--gold);
+      box-shadow: 0 0 60px rgba(201,168,76,0.5);
+      animation: popIn 0.3s ease-out;
+    }
+
+    @keyframes popIn {
+      0%   { transform: scale(0.6); opacity: 0; }
+      100% { transform: scale(1);   opacity: 1; }
+    }
   </style>
 </head>
 <body>
@@ -202,6 +231,10 @@
   <div class="dice-hint">Klikk på ein terning eller trykk KAST!</div>
 </main>
 
+<div class="easter-overlay" id="easterOverlay" onclick="this.classList.remove('visible')">
+  <img src="images/gogutten.jpg" alt="Gogutten" />
+</div>
+
 <footer>Drekka ud Villi · Amsterdam 2026</footer>
 
 <script>
@@ -221,6 +254,12 @@ const FACE_DOTS = {
 let diceCount = 1;
 let rolling = false;
 let diceValues = [1];
+
+function checkEasterEgg() {
+  if (diceCount >= 3 && diceValues.slice(0, diceCount).every(v => v === 6)) {
+    document.getElementById('easterOverlay').classList.add('visible');
+  }
+}
 
 function updateSum() {
   const sum = diceValues.slice(0, diceCount).reduce((a, b) => a + b, 0);
@@ -271,6 +310,7 @@ function rollDie(id) {
     setDieFace(id, Math.ceil(Math.random() * 6));
     rolling = false;
     document.getElementById('rollAllBtn').disabled = false;
+    checkEasterEgg();
   }, 975);
 }
 
@@ -295,6 +335,7 @@ function rollAll() {
     });
     rolling = false;
     document.getElementById('rollAllBtn').disabled = false;
+    checkEasterEgg();
   }, 975);
 }
 
