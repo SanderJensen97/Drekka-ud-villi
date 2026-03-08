@@ -43,6 +43,18 @@
     <h1>Drekka<br>ud Villi</h1>
     <div class="dates">24. – 26. April 2026 &nbsp;·&nbsp; Amsterdam</div>
 
+    <!-- Compliment generator -->
+    <div style="margin: 1.2rem auto 1.5rem; max-width: 480px; text-align: center; cursor: pointer;" onclick="newCompliment()" title="Klikk for ny kompliment">
+      <div id="complimentText" style="
+        font-family: 'Oswald', sans-serif;
+        font-size: 1.1rem;
+        letter-spacing: 0.08em;
+        color: var(--accent);
+        min-height: 1.6em;
+        transition: opacity 0.3s;
+      "></div>
+    </div>
+
     <!-- Info row -->
     <div class="nav-buttons">
       <a href="info.html" class="nav-btn">
@@ -86,6 +98,39 @@
 </main>
 
 <footer>Drekka ud Villi · Amsterdam 2026</footer>
+
+<script>
+// ---- Compliment generator ----
+const COMPLIMENTS = [
+  'Du e ein av dei kulaste personane eg kjenner.',
+  'Verda e betre med deg i den.',
+  'Du har eit smil som lyse opp heile rommet.',
+  'Du e den type venn alle trenge i livet sitt.',
+  'Du e genuint morosam – ikkje berre litt.',
+  'Folk ser opp til deg, og det e fortjent.',
+  'Du har ein energi som gjer alle i godt humør.',
+  'Du e tøffare enn du trur.',
+  'Det e ingen andre eg heller villa drukke øl med.',
+  'Du gjer kvar tur ti ganger betre berre ved å vera der.',
+  // 👇 Legg til fleire komplimentar her
+];
+
+let lastIdx = -1;
+
+function newCompliment() {
+  const el = document.getElementById('complimentText');
+  let idx;
+  do { idx = Math.floor(Math.random() * COMPLIMENTS.length); } while (idx === lastIdx && COMPLIMENTS.length > 1);
+  lastIdx = idx;
+  el.style.opacity = '0';
+  setTimeout(() => {
+    el.textContent = COMPLIMENTS[idx];
+    el.style.opacity = '1';
+  }, 200);
+}
+
+newCompliment();
+</script>
 
 <script>
 (function() {
