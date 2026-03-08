@@ -189,7 +189,7 @@
 <footer>Drekka ud Villi · Amsterdam 2026</footer>
 
 <script>
-if (sessionStorage.getItem('tripStarted')) {
+if (new Date() >= new Date('2026-04-23T19:00:00')) {
   document.querySelectorAll('.cost-val').forEach(td => {
     td.innerHTML = '<span style="background:#1a0000; color:var(--deep-red); font-family:\'Oswald\',sans-serif; letter-spacing:0.12em; padding:0.1em 0.5em; border-radius:3px; border:1px solid var(--deep-red); font-size:0.85em;">REDACTED</span>';
   });
