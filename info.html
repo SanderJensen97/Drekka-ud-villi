@@ -131,7 +131,7 @@
 
     </div>
     <p style="color:#666; font-size:0.8rem; margin-top:0.75rem; font-style:italic;">
-      Delt opp rommen for å gjør ting litt lettere, om dokk vil bytta rom internt gjer me faen.
+      * Delt opp rommen for å gjør check-in litt lettere, om dokk vil bytta rom internt gjer me faen.
     </p>
   </div>
 
@@ -140,11 +140,11 @@
     <table class="cost-table">
       <tr>
         <td>✈️ Fly (t/r)</td>
-        <td>3 253 NOK</td>
+        <td class="cost-val">3 253 NOK</td>
       </tr>
       <tr>
         <td>🏨 Hotell</td>
-        <td>3 000 NOK</td>
+        <td class="cost-val">3 000 NOK</td>
       </tr>
       <tr>
         <td>🎯 Aktivitetar</td>
@@ -152,7 +152,7 @@
       </tr>
       <tr>
         <td><strong>Totalt så langt</strong></td>
-        <td><strong>~6 253 NOK</strong></td>
+        <td class="cost-val"><strong>~6 253 NOK</strong></td>
       </tr>
     </table>
     <p style="color:#666; font-size:0.8rem; margin-top:0.75rem;">
@@ -187,6 +187,14 @@
 </main>
 
 <footer>Drekka ud Villi · Amsterdam 2026</footer>
+
+<script>
+if (!sessionStorage.getItem('tripStarted')) {
+  document.querySelectorAll('.cost-val').forEach(td => {
+    td.innerHTML = '<span style="background:#1a0000; color:var(--deep-red); font-family:\'Oswald\',sans-serif; letter-spacing:0.12em; padding:0.1em 0.5em; border-radius:3px; border:1px solid var(--deep-red); font-size:0.85em;">REDACTED</span>';
+  });
+}
+</script>
 
 <script src="auth.js"></script>
 <script>requireGlobalAuth();</script>

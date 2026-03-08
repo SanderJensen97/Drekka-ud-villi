@@ -195,6 +195,9 @@ async function requireBingoAuth() {
       'hehe',
       'fordi du kom så langt ska du faktisk få passordet',
       'det e: thuvautenh',
+      'det e det asså, du e bare ikkje den skarpaste steikespadå i oppvaskmaskinen',
+      'vis du ikkje har fatta det te nå edet bare å gi opp...',
+      'gå og les ein bok eller noge',
     ]
   );
 }

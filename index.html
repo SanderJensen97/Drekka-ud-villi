@@ -104,7 +104,7 @@
 // ---- Compliment generator ----
 const COMPLIMENTS = [
   // komplimenter
-  'Du e definisjonen på peak male specie',                // 1
+  'Du e definisjonen på peak male species.',                // 1
   'Du e ein av de kulaste eg kjenne.',                    // 2
   'Du e genuint løyen – ikkje bare litt.',                // 3
   'Folk ser opp te deg, og det e forståelig.',            // 4
@@ -123,7 +123,7 @@ const COMPLIMENTS = [
   'Du e topp 1% menneske.',                               // 17
   'Du går rundt som du har soundtrack i bakgrunnen.',     // 18
   'Du konne fått applaus for å gå inn i et rom.',         // 19
-  'Kjøpa auraen din eller?.',                             // 20
+  'Kjøpa auraen din eller?',                             // 20
   'SIGMA BOY.',                                           // 21
   'Du konne overbevist ein fisk om å drukna.',            // 22
   'Du e så mandige at skjegg vokse av respekt',           // 23
@@ -132,7 +132,7 @@ const COMPLIMENTS = [
   'Du e faktisk imponerande... på heilt feil måte.',                // 1
   'Du e bevis på at selvtillit ikkje kreve kompetanse.',            // 2
   'Du ser ud som ein som klappe når flyet landet.',                 // 3
-  'Du e grunnen te bruksanvisnier finnes.',                         // 4
+  'Du e grunnen te bruksanvisninger finnes.',                         // 4
   'HAHAHA konne lagt te et cruiship i de vikene der!',              // 5
   'Du e ein karakter ass, men ikkje hovedkarakter.',                // 6
   'Du e akkurat dum nok te å tro du e smart.',                      // 7
@@ -190,13 +190,14 @@ newCompliment();
 
 <script>
 (function() {
-  const TARGET = new Date('2026-04-24T07:00:00'); // 24. april 07:00 local time
+  const TARGET = new Date(Date.now() + 60000); // TEST: 1 minutt — byt tilbake til new Date('2026-04-24T07:00:00')
 
   function update() {
     const now  = new Date();
     const diff = TARGET - now;
 
     if (diff <= 0) {
+      sessionStorage.setItem('tripStarted', 'true');
       document.getElementById('countdownWrap').innerHTML =
         '<div class="countdown-label" style="font-size:2rem; font-family:\'Oswald\',sans-serif; letter-spacing:0.1em; color:var(--gold); animation:pulse 1s infinite alternate;">it is OOOONNNNNN!</div>';
       return;
