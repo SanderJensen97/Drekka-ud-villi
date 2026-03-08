@@ -23,24 +23,24 @@
   <a href="bingo.html">Bingo</a>
 </nav>
 
+<!-- Countdown pinned just below nav, outside main padding -->
+<div class="countdown-wrap" id="countdownWrap" style="padding:0.8rem 1rem 0;">
+  <div class="countdown-label">Oppmøte om</div>
+  <div class="countdown-blocks">
+    <div class="cd-block"><span id="cdDays">--</span><small>dager</small></div>
+    <div class="cd-sep">:</div>
+    <div class="cd-block"><span id="cdHours">--</span><small>timer</small></div>
+    <div class="cd-sep">:</div>
+    <div class="cd-block"><span id="cdMins">--</span><small>min</small></div>
+    <div class="cd-sep">:</div>
+    <div class="cd-block"><span id="cdSecs">--</span><small>sek</small></div>
+  </div>
+</div>
+
 <main>
   <div class="hero" style="padding-top:1.5rem;">
-    <div class="subtitle">AAAMMMSTEEER!!</div>
+    <div class="subtitle" style="font-size:clamp(1.4rem,4.5vw,2.2rem);">AAAMMMSTEEER!!</div>
     <div class="dates">24. – 26. April 2026</div>
-
-    <!-- Countdown -->
-    <div class="countdown-wrap" id="countdownWrap" style="padding:0.8rem 1rem 0.4rem;">
-      <div class="countdown-label">Oppmøte om</div>
-      <div class="countdown-blocks">
-        <div class="cd-block"><span id="cdDays">--</span><small>dager</small></div>
-        <div class="cd-sep">:</div>
-        <div class="cd-block"><span id="cdHours">--</span><small>timer</small></div>
-        <div class="cd-sep">:</div>
-        <div class="cd-block"><span id="cdMins">--</span><small>min</small></div>
-        <div class="cd-sep">:</div>
-        <div class="cd-block"><span id="cdSecs">--</span><small>sek</small></div>
-      </div>
-    </div>
 
     <!-- Kunngjøringer -->
     <div class="card" style="margin: 1.2rem auto; max-width: 480px; border-color: var(--border);">
@@ -51,7 +51,7 @@
       <div id="announcementText" style="font-size:0.95rem; color:var(--text-light); line-height:1.6; min-height:2.5em; transition:opacity 0.2s;"></div>
       <div style="display:flex; justify-content:space-between; margin-top:0.75rem;">
         <button onclick="prevAnnouncement()" id="annPrev" style="background:transparent; border:1px solid var(--border); border-radius:4px; color:#666; font-family:'Oswald',sans-serif; font-size:0.85rem; letter-spacing:0.1em; padding:0.25rem 0.75rem; cursor:pointer; transition:all 0.2s;" onmouseover="if(!this.disabled)this.style.borderColor='var(--gold)';this.style.color='var(--gold)';" onmouseout="this.style.borderColor='var(--border)';this.style.color='#666';">← Eldre</button>
-        <button onclick="nextAnnouncement()" id="annNext" style="background:transparent; border:1px solid var(--border); border-radius:4px; color:#666; font-family:'Oswald',sans-serif; font-size:0.85rem; letter-spacing:0.1em; padding:0.25rem 0.75rem; cursor:pointer; transition:all 0.2s;" onmouseover="if(!this.disabled)this.style.borderColor='var(--gold)';this.style.color='var(--gold)';" onmouseout="this.style.borderColor='var(--border)';this.style.color='#666';">Nyare →</button>
+        <button onclick="nextAnnouncement()" id="annNext" style="background:transparent; border:1px solid var(--border); border-radius:4px; color:#666; font-family:'Oswald',sans-serif; font-size:0.85rem; letter-spacing:0.1em; padding:0.25rem 0.75rem; cursor:pointer; transition:all 0.2s;" onmouseover="if(!this.disabled)this.style.borderColor='var(--gold)';this.style.color='var(--gold)';" onmouseout="this.style.borderColor='var(--border)';this.style.color='#666';">Nye →</button>
       </div>
     </div>
 
@@ -116,14 +116,20 @@
 // ---- Kunngjøringer ----
 // Legg til nye meldingar NEDST i lista. Øk VISIBLE_ANNOUNCEMENTS for å vise dei.
 // Siste melding i lista visast alltid først.
-const VISIBLE_ANNOUNCEMENTS = 1; // <-- øk dette talet for å vise fleire meldingar
+const VISIBLE_ANNOUNCEMENTS = 3; // <-- øk dette talet for å vise fleire meldingar
 
 const ALL_ANNOUNCEMENTS = [
   'Alle må senda minst ein challenge for villi te ein av forloverene på DM!',
-  '', // 2 – fyll inn tekst og øk VISIBLE_ANNOUNCEMENTS til 2
-  '', // 3 – fyll inn tekst og øk VISIBLE_ANNOUNCEMENTS til 3
+  'TEST 1', // 2 – fyll inn tekst og øk VISIBLE_ANNOUNCEMENTS til 2
+  'TEST 2', // 3 – fyll inn tekst og øk VISIBLE_ANNOUNCEMENTS til 3
   '', // 4 – fyll inn tekst og øk VISIBLE_ANNOUNCEMENTS til 4
   '', // 5 – fyll inn tekst og øk VISIBLE_ANNOUNCEMENTS til 5
+  '', // 6 – fyll inn tekst og øk VISIBLE_ANNOUNCEMENTS til 6
+  '', // 7 – fyll inn tekst og øk VISIBLE_ANNOUNCEMENTS til 7
+  '', // 8 – fyll inn tekst og øk VISIBLE_ANNOUNCEMENTS til 8
+  '', // 9 – fyll inn tekst og øk VISIBLE_ANNOUNCEMENTS til 9
+  '', // 10 – fyll inn tekst og øk VISIBLE_ANNOUNCEMENTS til 10
+  '', // 11 – fyll inn tekst og øk VISIBLE_ANNOUNCEMENTS til 11
 ];
 
 const VISIBLE = ALL_ANNOUNCEMENTS.slice(0, VISIBLE_ANNOUNCEMENTS).reverse(); // newest first
