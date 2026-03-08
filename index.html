@@ -43,8 +43,9 @@
     <h1>Drekka<br>ud Villi</h1>
     <div class="dates">24. – 26. April 2026 &nbsp;·&nbsp; Amsterdam</div>
 
-    <!-- Compliment generator -->
-    <div style="margin: 1.2rem auto 1.5rem; max-width: 480px; text-align: center; cursor: pointer;" onclick="newCompliment()" title="Klikk for ny kompliment">
+    <!-- Motivasjons generator -->
+    <div class="card" style="margin: 1.5rem auto; max-width: 480px; text-align: center; cursor: pointer; border-color: var(--border);" onclick="newCompliment()" title="Klikk for ny motivasjon">
+      <h3 style="font-family:'Oswald',sans-serif; font-size:0.75rem; letter-spacing:0.2em; text-transform:uppercase; color:var(--dark-gold); margin-bottom:0.6rem;">Motivasjons generator</h3>
       <div id="complimentText" style="
         font-family: 'Oswald', sans-serif;
         font-size: 1.1rem;
@@ -102,16 +103,23 @@
 <script>
 // ---- Compliment generator ----
 const COMPLIMENTS = [
-  'Du e ein av dei kulaste personane eg kjenner.',
-  'Verda e betre med deg i den.',
-  'Du har eit smil som lyse opp heile rommet.',
-  'Du e den type venn alle trenge i livet sitt.',
-  'Du e genuint morosam – ikkje berre litt.',
-  'Folk ser opp til deg, og det e fortjent.',
-  'Du har ein energi som gjer alle i godt humør.',
-  'Du e tøffare enn du trur.',
-  'Det e ingen andre eg heller villa drukke øl med.',
-  'Du gjer kvar tur ti ganger betre berre ved å vera der.',
+  'Du e ein av de kulaste eg kjenne.',
+  'Verden e ein bedre plass med deg i ann.',
+  'Du har et smil som lyse opp rommet.',
+  'CHUGG DE REGA!!!!!.',
+  'Du e genuint løyen – ikkje bare litt.',
+  'Folk ser opp te deg, og det e forståelig.',
+  'Energien din gjør alle i godt humør.',
+  'Satan du e tabar, hold kjeft å drikk nå',
+  'Du e tøffåre enn du tror.',
+  'Det e ingen andre eg heller vil ha drokke pils med.',
+  'Du gjør kver tur bedre, bare med å ver te stede.',
+  'Kem du tror du, du e, ta deg ein runde.',
+  'mmm you so big daddy.',
+  'Tenk å ver så mandige som deg.',
+  'Folk drømme om å ver deg.',
+  'Du burde vert model.',
+  'HAHAHA konne lagt te et cruiship i de vikene der!'
   // 👇 Legg til fleire komplimentar her
 ];
 
