@@ -167,6 +167,8 @@ async function requireBingoAuth() {
       'det va så spennande bullshittet eg har fonne på?',
       'Youtbe starta som datingside',
       'Nå gidde eg ikkje mer, back to the top',
+      'du ekje så smart..',
+      'passordet e hårføner',
       'or NOOT',
       'For alt du vett så kan det ver passordet poppe opp om 20 forsøk te',
       '20',
