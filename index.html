@@ -103,28 +103,63 @@
 <script>
 // ---- Compliment generator ----
 const COMPLIMENTS = [
-  'Du e definisjonen på peak male specie',
-  'Du e ein av de kulaste eg kjenne.',
-  'Verden e ein bedre plass med deg i ann.',
-  'Du har et smil som lyse opp rommet.',
-  'CHUGG DE REGA!!!!!.',
-  'Du e genuint løyen – ikkje bare litt.',
-  'Folk ser opp te deg, og det e forståelig.',
-  'Energien din gjør alle i godt humør.',
-  'Satan du e tabar, hold kjeft å drikk nå',
-  'Du e tøffåre enn du tror.',
-  'Det e ingen andre eg heller vil ha drokke pils med.',
-  'Du gjør kver tur bedre, bare med å ver te stede.',
-  'Kem du tror du, du e, ta deg ein runde.',
-  'mmm you so big daddy.',
-  'Tenk å ver så mandige som deg.',
-  'Folk drømme om å ver deg.',
-  'Du burde vert model.',
-  'HAHAHA konne lagt te et cruiship i de vikene der!'
-  // 👇 Legg til fleire komplimentar her
+  // komplimenter
+  'Du e definisjonen på peak male specie',                // 1
+  'Du e ein av de kulaste eg kjenne.',                    // 2
+  'Du e genuint løyen – ikkje bare litt.',                // 3
+  'Folk ser opp te deg, og det e forståelig.',            // 4
+  'Du e tøffåre enn toget.',                              // 5
+  'Det e ingen andre eg heller vil ha drokke pils med.',  // 6
+  'mmm you so big daddy.',                                // 7
+  'Tenk å ver så mandige som deg.',                       // 8
+  'Folk drømme om å ver deg.',                            // 9
+  'Du burde vert model.',                                 // 10
+  'Six-Seven.',                                           // 11
+  'Du e faktisk ein legende.',                            // 12
+  'Du har main character energi bro.',                    // 13
+  'Ro deg ner, folk blir misunnelige.',                   // 14
+  'Hadde eg hatt din selvtillit hadde eg styrt landet.',  // 15
+  'Du konne solgt sand i Sahara.',                        // 16
+  'Du e topp 1% menneske.',                               // 17
+  'Du går rundt som du har soundtrack i bakgrunnen.',     // 18
+  'Du konne fått applaus for å gå inn i et rom.',         // 19
+  'Kjøpa auraen din eller?.',                             // 20
+  'SIGMA BOY.',                                           // 21
+  'Du konne overbevist ein fisk om å drukna.',            // 22
+  'Du e så mandige at skjegg vokse av respekt',           // 23
+
+  // Roast
+  'Du e faktisk imponerande... på heilt feil måte.',                // 1
+  'Du e bevis på at selvtillit ikkje kreve kompetanse.',            // 2
+  'Du ser ud som ein som klappe når flyet landet.',                 // 3
+  'Du e grunnen te bruksanvisnier finnes.',                         // 4
+  'HAHAHA konne lagt te et cruiship i de vikene der!',              // 5
+  'Du e ein karakter ass, men ikkje hovedkarakter.',                // 6
+  'Du e akkurat dum nok te å tro du e smart.',                      // 7
+  'Du e ein mann av mange talenter, ingen av de nyttige.',          // 8
+  'Du e ein sterk kandidat te Darwin Awards.',                      // 9
+  'Du e typen som lese kommentarfeltet og blir klokere.',           // 10
+  'Du ekje heilt dum, bare veldig konsekvent.',                     // 11
+  'Du e ein sånn fyr som trykke på knapper for å se ka som skjer.', // 12
+  'Du e som ein idé itte 8 pils.',                                  // 13
+  'Du e ein slags prototype av menneske.',                          // 14
+  'Du e typen som finne nye måter å ta feil på.',                   // 15
+  'Du e typen som snuble i flatt terreng.',                         // 16
+  'Du e ein spesialutgave ingen bestilte.',                         // 17
+
+  // Drikke
+  'CHUGG DE REGA!!!!!.',                                  // 1
+  'Satan du e tabar, hold kjeft å drikk nå',              // 2
+  'Kem du tror du, du e, ta deg ein runde.',              // 3
+  'Dette lukte som ein pils situasjon.',                  // 4
+  'Drikk nå, tenk seinere.',                              // 5
+
+  // Random
+  'Ein krabbe har tatt et valg.',                         // 1
+
 ];
 
-const HISTORY_SIZE = 10;
+const HISTORY_SIZE = 35;
 const recentIdxs = [];
 let firstRun = true;
 
