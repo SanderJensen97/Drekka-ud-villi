@@ -23,25 +23,37 @@
   <a href="bingo.html">Bingo</a>
 </nav>
 
-<!-- Countdown pinned just below nav, outside main padding -->
-<div class="countdown-wrap" id="countdownWrap" style="padding:0.8rem 1rem 0;">
-  <div class="countdown-label">Oppmøte om</div>
-  <div class="countdown-blocks">
-    <div class="cd-block"><span id="cdDays">--</span><small>dager</small></div>
-    <div class="cd-sep">:</div>
-    <div class="cd-block"><span id="cdHours">--</span><small>timer</small></div>
-    <div class="cd-sep">:</div>
-    <div class="cd-block"><span id="cdMins">--</span><small>min</small></div>
-    <div class="cd-sep">:</div>
-    <div class="cd-block"><span id="cdSecs">--</span><small>sek</small></div>
-  </div>
-</div>
-
 <main>
   <div class="hero" style="padding-top:1.5rem;">
     <div class="subtitle">AAAMMMSTEEER!!</div>
-    <h1>Drekka<br>ud Villi</h1>
-    <div class="dates">24. – 26. April 2026 &nbsp;·&nbsp; Amsterdam</div>
+    <div class="dates">24. – 26. April 2026</div>
+
+    <!-- Countdown -->
+    <div class="countdown-wrap" id="countdownWrap" style="padding:0.8rem 1rem 0.4rem;">
+      <div class="countdown-label">Oppmøte om</div>
+      <div class="countdown-blocks">
+        <div class="cd-block"><span id="cdDays">--</span><small>dager</small></div>
+        <div class="cd-sep">:</div>
+        <div class="cd-block"><span id="cdHours">--</span><small>timer</small></div>
+        <div class="cd-sep">:</div>
+        <div class="cd-block"><span id="cdMins">--</span><small>min</small></div>
+        <div class="cd-sep">:</div>
+        <div class="cd-block"><span id="cdSecs">--</span><small>sek</small></div>
+      </div>
+    </div>
+
+    <!-- Kunngjøringer -->
+    <div class="card" style="margin: 1.2rem auto; max-width: 480px; border-color: var(--border);">
+      <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:0.5rem;">
+        <h3 style="font-family:'Oswald',sans-serif; font-size:0.75rem; letter-spacing:0.2em; text-transform:uppercase; color:var(--dark-gold); margin:0;">Kunngjøringer</h3>
+        <span style="font-family:'Oswald',sans-serif; font-size:0.75rem; color:#555;" id="announcementCounter"></span>
+      </div>
+      <div id="announcementText" style="font-size:0.95rem; color:var(--text-light); line-height:1.6; min-height:2.5em; transition:opacity 0.2s;"></div>
+      <div style="display:flex; justify-content:space-between; margin-top:0.75rem;">
+        <button onclick="prevAnnouncement()" id="annPrev" style="background:transparent; border:1px solid var(--border); border-radius:4px; color:#666; font-family:'Oswald',sans-serif; font-size:0.85rem; letter-spacing:0.1em; padding:0.25rem 0.75rem; cursor:pointer; transition:all 0.2s;" onmouseover="if(!this.disabled)this.style.borderColor='var(--gold)';this.style.color='var(--gold)';" onmouseout="this.style.borderColor='var(--border)';this.style.color='#666';">← Eldre</button>
+        <button onclick="nextAnnouncement()" id="annNext" style="background:transparent; border:1px solid var(--border); border-radius:4px; color:#666; font-family:'Oswald',sans-serif; font-size:0.85rem; letter-spacing:0.1em; padding:0.25rem 0.75rem; cursor:pointer; transition:all 0.2s;" onmouseover="if(!this.disabled)this.style.borderColor='var(--gold)';this.style.color='var(--gold)';" onmouseout="this.style.borderColor='var(--border)';this.style.color='#666';">Nyare →</button>
+      </div>
+    </div>
 
     <!-- Motivasjons generator -->
     <div class="card" style="margin: 1.5rem auto; max-width: 480px; text-align: center; cursor: pointer; border-color: var(--border);" onclick="newCompliment()" title="Klikk for ny motivasjon">
@@ -101,6 +113,44 @@
 <footer>Drekka ud Villi · Amsterdam 2026</footer>
 
 <script>
+// ---- Kunngjøringer ----
+// Legg til nye meldingar NEDST i lista. Øk VISIBLE_ANNOUNCEMENTS for å vise dei.
+// Siste melding i lista visast alltid først.
+const VISIBLE_ANNOUNCEMENTS = 1; // <-- øk dette talet for å vise fleire meldingar
+
+const ALL_ANNOUNCEMENTS = [
+  'Alle må senda minst ein challenge for villi te ein av forloverene på DM!',
+  '', // 2 – fyll inn tekst og øk VISIBLE_ANNOUNCEMENTS til 2
+  '', // 3 – fyll inn tekst og øk VISIBLE_ANNOUNCEMENTS til 3
+  '', // 4 – fyll inn tekst og øk VISIBLE_ANNOUNCEMENTS til 4
+  '', // 5 – fyll inn tekst og øk VISIBLE_ANNOUNCEMENTS til 5
+];
+
+const VISIBLE = ALL_ANNOUNCEMENTS.slice(0, VISIBLE_ANNOUNCEMENTS).reverse(); // newest first
+let annIdx = 0;
+
+function renderAnnouncement() {
+  const el = document.getElementById('announcementText');
+  el.style.opacity = '0';
+  setTimeout(() => {
+    el.textContent = VISIBLE[annIdx];
+    el.style.opacity = '1';
+  }, 150);
+  document.getElementById('announcementCounter').textContent =
+    VISIBLE.length > 1 ? `${annIdx + 1} / ${VISIBLE.length}` : '';
+  document.getElementById('annPrev').disabled = annIdx >= VISIBLE.length - 1;
+  document.getElementById('annNext').disabled = annIdx <= 0;
+  document.getElementById('annPrev').style.opacity = annIdx >= VISIBLE.length - 1 ? '0.3' : '1';
+  document.getElementById('annNext').style.opacity = annIdx <= 0 ? '0.3' : '1';
+}
+
+function prevAnnouncement() { if (annIdx < VISIBLE.length - 1) { annIdx++; renderAnnouncement(); } }
+function nextAnnouncement() { if (annIdx > 0) { annIdx--; renderAnnouncement(); } }
+
+renderAnnouncement();
+</script>
+
+<script>
 // ---- Compliment generator ----
 const COMPLIMENTS = [
   // komplimenter
@@ -126,7 +176,7 @@ const COMPLIMENTS = [
   'Kjøpa auraen din eller?',                             // 20
   'SIGMA BOY.',                                           // 21
   'Du konne overbevist ein fisk om å drukna.',            // 22
-  'Du e så mandige at skjegg vokse av respekt',           // 23
+  'Du e så mandige at skjegg vokse av respekt.',           // 23
 
   // Roast
   'Du e faktisk imponerande... på heilt feil måte.',                // 1
@@ -148,9 +198,9 @@ const COMPLIMENTS = [
   'Du e ein spesialutgave ingen bestilte.',                         // 17
 
   // Drikke
-  'CHUGG DE REGA!!!!!.',                                  // 1
-  'Satan du e tabar, hold kjeft å drikk nå',              // 2
-  'Kem du tror du, du e, ta deg ein runde.',              // 3
+  'CHUGG DE REGA!!!!!',                                  // 1
+  'Satan du e tabar, hold kjeft å drikk nå.',              // 2
+  'Kem du tror du e, ta deg ein runde.',                  // 3
   'Dette lukte som ein pils situasjon.',                  // 4
   'Drikk nå, tenk seinere.',                              // 5
 
