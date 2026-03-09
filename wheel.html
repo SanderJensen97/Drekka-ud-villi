@@ -434,8 +434,10 @@ function hackAngleForVilli() {
   const villiIdx = active.indexOf('Villi');
   if (villiIdx < 0) return null;
   const slice = (Math.PI * 2) / active.length;
-  // Target middle of Villi's segment under the pointer at -π/2
-  const targetPointer = villiIdx * slice + slice * 0.5;
+  // Land randomly within Villi's tile — uniform between 8% and 92% of the slice
+  // so it stays clearly inside but can fall near either edge
+  const pos = 0.08 + Math.random() * 0.84;
+  const targetPointer = villiIdx * slice + slice * pos;
   let a = (-Math.PI / 2 + Math.PI * 2 * 100 - targetPointer) % (Math.PI * 2);
   if (a < 0) a += Math.PI * 2;
   return a;
