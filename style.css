@@ -236,6 +236,7 @@ main {
   text-align: right;
   color: var(--gold);
   font-weight: bold;
+  white-space: nowrap;
 }
 
 .cost-table tr:last-child td {
