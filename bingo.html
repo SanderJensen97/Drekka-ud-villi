@@ -31,6 +31,7 @@
 
       <!-- Quick-pick chips -->
       <div class="participant-chips" id="chipContainer"></div>
+      <p style="color:#777; font-size:0.85rem; font-style:italic; margin-top:0.75rem;">📸 Dokumenter på snap om mulig</p>
     </div>
 
     <!-- The card itself -->
@@ -80,42 +81,43 @@ const PARTICIPANTS = [
 // Each task has optional `exclude` — names who should NOT see this task on their card.
 // null / missing = everyone can get it.
 const ALL_TASKS = [
-  { text: "Alle må venta på at Matti ska pissa",         exclude: ["Matti"] },
-  { text: "Bjelli e sjåfør/kaptein av et fremkomstmiddel", exclude: ["Bjelli"] },
-  { text: "Villi får seg tattoo",                         exclude: ["Villi"] },
-  { text: "Tommy stikke på solo mission",                 exclude: ["Tommy"] },
-  { text: "Are spør om å kyssa deg",                      exclude: ["Are"] },
-  { text: "Tommy får ein på tryne",                       exclude: ["Tommy"] },
-  { text: "Olav drikke vann/brus istedenfor øl",          exclude: ["Olav"] },
-  { text: "Mj ser syyyyykt mye digg",                     exclude: ["Mj"] },
-  { text: "Heike kline med ei jente",                     exclude: ["Heike"] },
-  { text: "Tommy bler couch-locked",                      exclude: ["Tommy"] },
-  { text: "Kessa drikke vekk hangen på søndag",           exclude: ["Kessa"] },
-  { text: "Bjelli kjøpe GT te deg uopfordra",             exclude: ["Bjelli"] },
-  { text: "Kessa kjøpe shot te deg uopfordra",            exclude: ["Kessa"] },
-  { text: "Are spør om du kan kjøpa pils te han",         exclude: ["Are"] },
-  { text: "Jone spise dansk rugbrød te frokost",          exclude: ["Jone"] },
-  { text: "Håvi får kjeft av randoms",                    exclude: ["Håvi"] },
-  { text: "Bjelli/Villi ser på store pupper",             exclude: ["Bjelli","Villi"] },
-  { text: "Ekka tar med seg nogen i ekkakammeret",        exclude: ["Ekka"] },
-  { text: "Etti foreslår å dra på strippas",              exclude: ["Etti"] },
-  { text: "Ein Herland spyr",                             exclude: ["Heike","Villi","Sylli"] },
-  { text: "Ole tror han har fått seg nye venner",         exclude: ["Ole"] },
-  { text: "Mikael slår deg i noe",                        exclude: ["Mikael"] },
-  { text: "Iden sove ein aen plass enn sengå si",         exclude: ["Iden"] },
-  { text: "Sylli stjele tebake jeanså sine",              exclude: ["Sylli"] },
-  { text: "Sweed ler på den kjekke måten",                exclude: ["Sweed"] },
-  { text: "Mj prøve å fasilitera seriøs prat om livet ditt", exclude: ["Mj"] },
-  { text: "Du låne sykkelen te ein random i minst 30 sekund", exclude: [] },
-  { text: "Olav danse",                                   exclude: ["Olav"] },
-  { text: "Du blir tagga i nogen randoms sitt instabilde/story", exclude: [] },
-  { text: "Du bade",                                      exclude: [] },
-  { text: "Ekka begynne å blø neseblod",                  exclude: ["Ekka"] },
-  { text: "Du buste Sylli i å gama Clash of Clans",       exclude: ["Sylli"] },
-  { text: "Etti føne håret",                              exclude: ["Etti"] },
-  { text: "Tommy bruke feil navn på Mikael",              exclude: ["Tommy","Mikael"] },
-  { text: "Matti vise deg pikken",                        exclude: ["Matti"] },
-];
+  { text: "Alle må venta på at Matti ska pissa",                 exclude: ["Matti"] },                  // 1
+  { text: "Bjelli e sjåfør/kaptein av et fremkomstmiddel",       exclude: ["Bjelli"] },                 // 2
+  { text: "Villi får seg tattoo",                                exclude: ["Villi"] },                  // 3
+  { text: "Tommy stikke på solo mission",                        exclude: ["Tommy"] },                  // 4
+  { text: "Are prøve å kyssa deg",                               exclude: ["Are"] },                    // 5
+  { text: "Tommy får ein på tryne",                              exclude: ["Tommy"] },                  // 6
+  { text: "Olav drikke vann/brus istedenfor øl",                 exclude: ["Olav"] },                   // 7
+  { text: "Heike kline med ei jente",                            exclude: ["Heike"] },                  // 8
+  { text: "Kessa drikke vekk hangen på søndag",                  exclude: ["Kessa"] },                  // 9
+  { text: "Bjelli kjøpe GT te deg uopfordra",                    exclude: ["Bjelli"] },                 // 10
+  { text: "Kessa kjøpe shot te deg uopfordra",                   exclude: ["Kessa"] },                  // 11
+  { text: "Jone spise dansk rugbrød te frokost",                 exclude: ["Jone"] },                   // 12
+  { text: "Håvi får kjeft av randoms",                           exclude: ["Håvi"] },                   // 13
+  { text: "Bjelli og Villi ser på store pupper",                 exclude: ["Bjelli","Villi"] },         // 14
+  { text: "Ekka tar med seg nogen i ekkakammeret",               exclude: ["Ekka"] },                   // 15
+  { text: "Etti foreslår å dra på strippas",                     exclude: ["Etti"] },                   // 16
+  { text: "Ein Herland spyr",                                    exclude: ["Heike","Villi","Sylli"] },  // 17
+  { text: "Ole tror han har fått seg nye venner",                exclude: ["Ole"] },                    // 18
+  { text: "Mikael slår seg løs på dansegolvet",                  exclude: ["Mikael"] },                 // 19
+  { text: "Iden sove ein aen plass enn sengå si",                exclude: ["Iden"] },                   // 20
+  { text: "Sylli stjele tebake jeanså sine",                     exclude: ["Sylli"] },                  // 21
+  { text: "Sweed ler på den kjekke måten",                       exclude: ["Sweed"] },                  // 22
+  { text: "Mj prøve å fasilitera seriøs prat om livet ditt",     exclude: ["Mj"] },                     // 23
+  { text: "Du bade",                                             exclude: [] },                         // 24
+  { text: "Ekka begynne å blø neseblod",                         exclude: ["Ekka"] },                   // 25
+  { text: "Du buste Sylli i å gama Clash of Clans",              exclude: ["Sylli"] },                  // 26
+  { text: "Etti føne håret",                                     exclude: ["Etti"] },                   // 27
+  { text: "Tommy bruke feil navn på Mikael",                     exclude: ["Tommy","Mikael"] },         // 28
+  { text: "Matti vise deg pikken",                               exclude: ["Matti"] },                  // 29
+  { text: "Jone/Iden stikke hjem og legge seg før 22:00",        exclude: ["Jone","Iden"] },            // 30
+  { text: "Mj miste jakken sin",                                 exclude: ["Mj"] },                     // 31
+  { text: "Ole hoste eller drar på narsj med randoms",           exclude: ["Ole"] },                    // 32
+  { text: "Olav blir flaue og gjømme seg",                       exclude: ["Olav"] },                   // 33
+  { text: "Are klage på vinen",                                  exclude: ["Are"] },                    // 34
+  { text: "Ole spør om å få styra musikken",                     exclude: ["Ole"] },                    // 35
+  { text: "Håvi tar nazi hilsen te randoms",                     exclude: ["Håvi"] },                   // 36
+];       
 
 const CENTER_TASK = "Du spande ein drink på ein av forloverene";
 
