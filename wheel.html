@@ -431,7 +431,7 @@ function var_gold() { return '#c9a84c'; }
 
 // ---- Hack: compute angle that puts Villi under the pointer ----
 function hackAngleForVilli() {
-  const villiIdx = active.indexOf('Villi');
+  const villiIdx = active.indexOf('Olav');
   if (villiIdx < 0) return null;
   const slice = (Math.PI * 2) / active.length;
   // Land randomly within Villi's tile — uniform between 8% and 92% of the slice
